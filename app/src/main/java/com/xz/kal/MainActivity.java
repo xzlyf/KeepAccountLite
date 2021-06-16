@@ -1,11 +1,17 @@
 package com.xz.kal;
 
-import android.util.Log;
-
+import com.orhanobut.logger.Logger;
 import com.xz.kal.base.BaseActivity;
+import com.xz.kal.entity.Bill;
 import com.xz.kal.sql.DBManager;
 
+import java.util.Date;
+import java.util.List;
+
 public class MainActivity extends BaseActivity {
+
+
+	DBManager db;
 
 
 	@Override
@@ -20,8 +26,24 @@ public class MainActivity extends BaseActivity {
 
 	@Override
 	public void initData() {
+		db = DBManager.getInstance(mContext);
+		db.deleteBill(3);
+		List<Bill> list = db.queryBill();
+		for (int i = 0; i < list.size(); i++) {
+			Logger.d(list.get(i).toString());
+		}
+	}
 
-		DBManager db = DBManager.getInstance(mContext);
-		Log.d(TAG, "initData: "+db.queryTotal("category"));
+	private void testData() {
+		for (int i = 0; i < 10; i++) {
+			Bill bill = new Bill();
+			bill.setCategoryId(i + 1);
+			bill.setInout(Math.random() > 0.5 ? "in" : "out");
+			bill.setMoney(Math.random());
+			bill.setRemark("没有备注");
+			bill.setCreateTime(new Date());
+			bill.setUpdateTime(new Date());
+			db.insertBill(bill);
+		}
 	}
 }
