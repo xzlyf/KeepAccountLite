@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
@@ -70,6 +71,17 @@ public class SlideRecyclerView extends RecyclerView {
 		if (iconSrc != 0) {
 			emptyIconBitmap = BitmapFactory.decodeResource(getResources(), iconSrc);
 			paint = new Paint();
+
+			int width = emptyIconBitmap.getWidth();
+			//如果指定的资源图片大于500px，则通过计算两图的缩放倍率，让指定的资源图片尽可能的接近500px
+			if (width > 500) {
+				float zoom = 500.0f / (float) width;
+				int height = emptyIconBitmap.getHeight();
+				Matrix matrix = new Matrix();
+				matrix.postScale(zoom, zoom);
+				emptyIconBitmap = Bitmap.createBitmap(emptyIconBitmap, 0, 0, width, height, matrix, true);
+			}
+
 		}
 
 	}

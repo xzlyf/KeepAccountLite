@@ -1,14 +1,22 @@
 package com.xz.kal.activity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.orhanobut.logger.Logger;
 import com.xz.kal.R;
 import com.xz.kal.base.BaseActivity;
+import com.xz.kal.custom.SlideRecyclerView;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.sql.DBManager;
 
@@ -17,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.relex.circleindicator.CircleIndicator;
 
 public class MainActivity extends BaseActivity {
@@ -26,6 +35,18 @@ public class MainActivity extends BaseActivity {
 	ViewPager topPage;
 	@BindView(R.id.indicator)
 	CircleIndicator indicator;
+	@BindView(R.id.recycler_money)
+	SlideRecyclerView recyclerMoney;
+	@BindView(R.id.btn_detail)
+	Button btnDetail;
+	@BindView(R.id.btn_my)
+	Button btnMy;
+	@BindView(R.id.btn_add)
+	ImageButton btnAdd;
+	TextView tvDay;
+	TextView tvDayMoney;
+	TextView tvMonth;
+	TextView tvMonthMoney;
 	private DBManager db;
 
 
@@ -43,11 +64,14 @@ public class MainActivity extends BaseActivity {
 	public void initData() {
 		initView();
 		db = DBManager.getInstance(mContext);
-
 	}
 
 	private void initView() {
 		View dayView = View.inflate(this, R.layout.fragment_day, null);
+		tvDay = dayView.findViewById(R.id.tv_day);
+		tvDayMoney = dayView.findViewById(R.id.tv_day_money);
+		tvMonth = dayView.findViewById(R.id.tv_month);
+		tvMonthMoney = dayView.findViewById(R.id.tv_month_money);
 		View MonthView = View.inflate(this, R.layout.fragment_month, null);
 		List<View> viewList = new ArrayList<>();
 		viewList.add(dayView);
@@ -86,4 +110,10 @@ public class MainActivity extends BaseActivity {
 		}
 	}
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		// TODO: add setContentView(...) invocation
+		ButterKnife.bind(this);
+	}
 }
