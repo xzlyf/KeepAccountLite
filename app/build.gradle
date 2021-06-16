@@ -43,4 +43,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     //viewpage指示器
     implementation 'me.relex:circleindicator:2.1.6'
+    //rxjava
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
 }

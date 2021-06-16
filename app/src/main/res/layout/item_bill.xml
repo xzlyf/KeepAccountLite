@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_yuanjiao"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/background_yuanjiao_left"
+            android:padding="5dp">
+
+            <ImageView
+                android:padding="5dp"
+                android:id="@+id/id_type_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingStart="12dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/id_type_name"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="购物"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/remark"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="1"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:maxEms="12"
+                android:maxLength="50"
+                android:singleLine="true"
+                android:text="今天捡到钱啦！！！"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/money_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="10dp"
+                android:text="-180￥"
+                android:textSize="18sp" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        >
+
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_yuanjiao_right_red"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="删除"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+    </FrameLayout>
+</LinearLayout>

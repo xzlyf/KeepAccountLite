@@ -1,8 +1,5 @@
-package com.xz.kal.activity;
+package com.xz.kal.activity.home;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -10,25 +7,27 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.orhanobut.logger.Logger;
 import com.xz.kal.R;
+import com.xz.kal.adapter.BillAdapter;
 import com.xz.kal.base.BaseActivity;
+import com.xz.kal.constant.Local;
 import com.xz.kal.custom.SlideRecyclerView;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.sql.DBManager;
+import com.xz.kal.utils.SpacesItemDecorationVertical;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import me.relex.circleindicator.CircleIndicator;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements IHomeContract.IView {
 
 
 	@BindView(R.id.top_page)
@@ -47,7 +46,9 @@ public class MainActivity extends BaseActivity {
 	TextView tvDayMoney;
 	TextView tvMonth;
 	TextView tvMonthMoney;
-	private DBManager db;
+
+	private Presenter mPresenter;
+	private BillAdapter billAdapter;
 
 
 	@Override
@@ -62,8 +63,8 @@ public class MainActivity extends BaseActivity {
 
 	@Override
 	public void initData() {
+		mPresenter = new Presenter(this);
 		initView();
-		db = DBManager.getInstance(mContext);
 	}
 
 	private void initView() {
@@ -95,25 +96,36 @@ public class MainActivity extends BaseActivity {
 			}
 		});
 		indicator.setViewPager(topPage);
-	}
 
-	private void testData() {
-		for (int i = 0; i < 10; i++) {
-			Bill bill = new Bill();
-			bill.setCategoryId(i + 1);
-			bill.setInout(Math.random() > 0.5 ? "in" : "out");
-			bill.setMoney(Math.random());
-			bill.setRemark("没有备注");
-			bill.setCreateTime(new Date());
-			bill.setUpdateTime(new Date());
-			db.insertBill(bill);
-		}
+		recyclerMoney.setLayoutManager(new LinearLayoutManager(this));
+		recyclerMoney.addItemDecoration(new SpacesItemDecorationVertical(10));
+		billAdapter = new BillAdapter(mContext);
+		recyclerMoney.setAdapter(billAdapter);
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		// TODO: add setContentView(...) invocation
-		ButterKnife.bind(this);
+	public void refresh(List<Bill> list) {
+		billAdapter.superRefresh(list);
+	}
+
+	@Override
+	public void setDay(Calendar calendar) {
+		tvDay.setText(String.format("%s月%s日",
+				calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONDAY) + 1));
+	}
+
+	@Override
+	public void setDayMoney(String st) {
+		tvDayMoney.setText(String.format(Local.symbol + "%s", st));
+	}
+
+	@Override
+	public void setMonth(Calendar calendar) {
+		tvMonth.setText(String.format("%s月", calendar.get(Calendar.DAY_OF_MONTH)));
+	}
+
+	@Override
+	public void setMonthMoney(String st) {
+		tvMonthMoney.setText(String.format(Local.symbol + "%s", st));
 	}
 }

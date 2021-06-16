@@ -12,10 +12,13 @@
     <color name="dark">#EBEBEB</color>
 
     <color name="white">#FFFFFFFF</color>
+    <color name="red">#DD3434</color>
+    <color name="red_press">#8D2121</color>
     <color name="transparent">#00000000</color>
 
     <!--加载对话框的那个动画-->
     <color name="triangle">#aa72d572</color>
     <color name="circle">#aa738ffe</color>
     <color name="rect">#aae84e40</color>
+
 </resources>

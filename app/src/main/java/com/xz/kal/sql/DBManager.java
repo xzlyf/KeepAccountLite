@@ -243,4 +243,18 @@ public class DBManager {
 		}
 		return list;
 	}
+
+
+	private void testData() {
+		for (int i = 0; i < 10; i++) {
+			Bill bill = new Bill();
+			bill.setCategoryId(i + 1);
+			bill.setInout(Math.random() > 0.5 ? "in" : "out");
+			bill.setMoney(Math.random());
+			bill.setRemark("没有备注");
+			bill.setCreateTime(new Date());
+			bill.setUpdateTime(new Date());
+			insertBill(bill);
+		}
+	}
 }
