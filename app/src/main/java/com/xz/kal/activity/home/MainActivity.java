@@ -17,6 +17,7 @@ import com.xz.kal.base.BaseActivity;
 import com.xz.kal.constant.Local;
 import com.xz.kal.custom.SlideRecyclerView;
 import com.xz.kal.entity.Bill;
+import com.xz.kal.sql.DBManager;
 import com.xz.kal.utils.SpacesItemDecorationVertical;
 
 import java.util.ArrayList;
@@ -48,6 +49,8 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 
 	private Presenter mPresenter;
 	private BillAdapter billAdapter;
+	private Calendar dayCal = Calendar.getInstance();
+	private Calendar monthCal = Calendar.getInstance();
 
 	@Override
 	public boolean homeAsUpEnabled() {
@@ -63,18 +66,19 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 	public void initData() {
 		mPresenter = new Presenter(this);
 		initView();
+		setDay(dayCal);
+		setMonth(monthCal);
 		//获取今日的账单
 		mPresenter.getBill();
-
 	}
 
 	private void initView() {
 		View dayView = View.inflate(this, R.layout.fragment_day, null);
 		tvDay = dayView.findViewById(R.id.tv_day);
 		tvDayMoney = dayView.findViewById(R.id.tv_day_money);
-		tvMonth = dayView.findViewById(R.id.tv_month);
-		tvMonthMoney = dayView.findViewById(R.id.tv_month_money);
 		View MonthView = View.inflate(this, R.layout.fragment_month, null);
+		tvMonth = MonthView.findViewById(R.id.tv_month);
+		tvMonthMoney = MonthView.findViewById(R.id.tv_month_money);
 		List<View> viewList = new ArrayList<>();
 		viewList.add(dayView);
 		viewList.add(MonthView);
@@ -97,8 +101,7 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 			}
 		});
 		indicator.setViewPager(topPage);
-
-		recyclerMoney.setLayoutManager(new LinearLayoutManager(this));
+		recyclerMoney.setLayoutManager(new LinearLayoutManager(mContext));
 		recyclerMoney.addItemDecoration(new SpacesItemDecorationVertical(10));
 		billAdapter = new BillAdapter(mContext);
 		recyclerMoney.setAdapter(billAdapter);
@@ -113,8 +116,7 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 
 	@Override
 	public void setDay(Calendar calendar) {
-		tvDay.setText(String.format("%s月%s日",
-				calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONDAY) + 1));
+		tvDay.setText(String.format("%s月%s日", (calendar.get(Calendar.MONDAY) + 1), calendar.get(Calendar.DAY_OF_MONTH)));
 	}
 
 	@Override
@@ -124,7 +126,7 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 
 	@Override
 	public void setMonth(Calendar calendar) {
-		tvMonth.setText(String.format("%s月", calendar.get(Calendar.DAY_OF_MONTH)));
+ 		tvMonth.setText(String.format("%s月", calendar.get(Calendar.DAY_OF_MONTH)));
 	}
 
 	@Override

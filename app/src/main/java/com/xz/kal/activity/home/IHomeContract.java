@@ -2,6 +2,7 @@ package com.xz.kal.activity.home;
 
 
 import com.xz.kal.entity.Bill;
+import com.xz.kal.entity.Category;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -22,6 +23,9 @@ public interface IHomeContract {
 
 		//计算指定时间范围的账单金额 日期格式 yyyy-MM-dd
 		Observable<String> calcBill(Date start, Date end);
+
+		//获取所有分类标签数据，包括默认标签和用户自定标签
+		Observable<List<Category>> getCategory();
 	}
 
 	interface IPresenter {

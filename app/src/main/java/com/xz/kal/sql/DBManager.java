@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.orhanobut.logger.Logger;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
 
@@ -212,10 +211,6 @@ public class DBManager {
 			}
 		}
 
-		for (int i = 0; i < list.size(); i++) {
-			Logger.d(list.get(i).toString());
-		}
-
 		return list;
 	}
 
@@ -298,7 +293,7 @@ public class DBManager {
 	}
 
 
-	private void testData() {
+	public void testData() {
 		for (int i = 0; i < 10; i++) {
 			Bill bill = new Bill();
 			bill.setCategoryId(i + 1);
