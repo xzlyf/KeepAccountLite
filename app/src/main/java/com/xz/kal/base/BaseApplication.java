@@ -2,6 +2,7 @@ package com.xz.kal.base;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
@@ -14,12 +15,14 @@ import java.util.List;
 
 public class BaseApplication extends Application {
 	private List<Activity> activities = new ArrayList<>();
+	private static Context mContext;
 	private static BaseApplication instance;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		instance = this;
+		mContext = getApplicationContext();
 		initLog();
 		//初始prefercences工具
 		PreferencesUtilV2.initPreferencesUtils(this, "keybag");
@@ -40,6 +43,10 @@ public class BaseApplication extends Application {
 
 	public static BaseApplication getInstance() {
 		return instance;
+	}
+
+	public static Context getContext() {
+		return mContext;
 	}
 
 	/**

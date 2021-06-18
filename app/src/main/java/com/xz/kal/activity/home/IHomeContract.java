@@ -1,12 +1,13 @@
 package com.xz.kal.activity.home;
 
-import android.database.Observable;
 
 import com.xz.kal.entity.Bill;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Observable;
 
 /**
  * @author czr
@@ -16,16 +17,20 @@ import java.util.List;
  */
 public interface IHomeContract {
 	interface IModel {
+		//获取指定时间范围的账单信息 日期格式 yyyy-MM-dd
 		Observable<List<Bill>> getBill(Date start, Date end);
 
+		//计算指定时间范围的账单金额 日期格式 yyyy-MM-dd
 		Observable<String> calcBill(Date start, Date end);
 	}
 
 	interface IPresenter {
-		//获取指定时间范围的账单信息
+		//获取今天的账单
+		void getBill();
+
+		//获取指定日期的账单
 		void getBill(Date start, Date end);
 
-		//计算指定时间范围的账单金额
 		void calcBill(Date start, Date end);
 	}
 

@@ -17,7 +17,6 @@ import com.xz.kal.base.BaseActivity;
 import com.xz.kal.constant.Local;
 import com.xz.kal.custom.SlideRecyclerView;
 import com.xz.kal.entity.Bill;
-import com.xz.kal.sql.DBManager;
 import com.xz.kal.utils.SpacesItemDecorationVertical;
 
 import java.util.ArrayList;
@@ -50,7 +49,6 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 	private Presenter mPresenter;
 	private BillAdapter billAdapter;
 
-
 	@Override
 	public boolean homeAsUpEnabled() {
 		return false;
@@ -65,6 +63,9 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 	public void initData() {
 		mPresenter = new Presenter(this);
 		initView();
+		//获取今日的账单
+		mPresenter.getBill();
+
 	}
 
 	private void initView() {
@@ -105,7 +106,9 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 
 	@Override
 	public void refresh(List<Bill> list) {
-		billAdapter.superRefresh(list);
+		if (list != null) {
+			billAdapter.superRefresh(list);
+		}
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.orhanobut.logger.Logger;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
 
@@ -32,6 +33,7 @@ import static com.xz.kal.sql.DBHelper.TABLE_COMMON;
  * @date 2021/6/15
  */
 public class DBManager {
+	public static final String TAG = DBManager.class.getName();
 	private static DBManager mInstance;
 	private DBHelper dbHelper;
 
@@ -163,6 +165,57 @@ public class DBManager {
 			}
 			db.close();
 		}
+		return list;
+	}
+
+	/**
+	 * 查询记账
+	 * 按时间区间来查
+	 *
+	 * @param start 开始时间 yyyy-MM-dd 的毫秒级时间戳
+	 * @param end   结束时间 yyyy-MM-dd 的毫秒级时间戳
+	 */
+	public List<Bill> queryBill(long start, long end) {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		StringBuilder sqlBuild = new StringBuilder();
+		sqlBuild.append("select ")
+				.append(" * ")
+				.append(" from ")
+				.append(TABLE_COMMON)
+				.append(" where ")
+				.append(FIELD_COMMON_CREATE)
+				.append(" between ")
+				.append(start)
+				.append(" and ")
+				.append(end);
+		Cursor cursor = null;
+		List<Bill> list = new ArrayList<>();
+		try {
+			cursor = db.rawQuery(sqlBuild.toString(), null);
+			Bill bill;
+			while (cursor.moveToNext()) {
+				bill = new Bill();
+				bill.setId(cursor.getInt(0));
+				bill.setCategoryId(cursor.getInt(1));
+				bill.setInout(cursor.getString(2));
+				bill.setMoney(cursor.getDouble(3));
+				bill.setRemark(cursor.getString(4));
+				bill.setUpdateTime(new Date(cursor.getLong(5)));
+				bill.setCreateTime(new Date(cursor.getLong(6)));
+				list.add(bill);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+
+		for (int i = 0; i < list.size(); i++) {
+			Logger.d(list.get(i).toString());
+		}
+
 		return list;
 	}
 
