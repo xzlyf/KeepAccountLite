@@ -1,6 +1,9 @@
 package com.xz.kal.activity.home;
 
+import com.orhanobut.logger.Logger;
+import com.xz.kal.constant.Local;
 import com.xz.kal.entity.Bill;
+import com.xz.kal.entity.Category;
 
 import java.util.Date;
 import java.util.List;
@@ -23,6 +26,20 @@ public class Presenter implements IHomeContract.IPresenter {
 	Presenter(IHomeContract.IView view) {
 		mView = view;
 		model = new Model();
+		model.getCategory()
+				.subscribeOn(Schedulers.newThread())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new BlockingBaseObserver<List<Category>>() {
+					@Override
+					public void onNext(@NonNull List<Category> list) {
+						Local.categories = list;
+					}
+
+					@Override
+					public void onError(@NonNull Throwable e) {
+
+					}
+				});
 	}
 
 	@Override

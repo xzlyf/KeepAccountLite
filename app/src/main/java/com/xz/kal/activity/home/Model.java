@@ -1,9 +1,12 @@
 package com.xz.kal.activity.home;
 
 
+import com.orhanobut.logger.Logger;
 import com.xz.kal.base.BaseApplication;
 import com.xz.kal.entity.Bill;
+import com.xz.kal.entity.Category;
 import com.xz.kal.sql.DBManager;
+import com.xz.kal.sql.DefaultData;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,5 +53,33 @@ public class Model implements IHomeContract.IModel {
 	@Override
 	public Observable<String> calcBill(Date start, Date end) {
 		return null;
+	}
+
+	@Override
+	public Observable<List<Category>> getCategory() {
+		return Observable.create(new ObservableOnSubscribe<List<Category>>() {
+			@Override
+			public void subscribe(@NonNull ObservableEmitter<List<Category>> emitter) throws Throwable {
+				List<Category> list = db.queryCategory();
+				if (list.size() == 0) {
+					//等于空，那重新生成默认分类给数据库
+					list = DefaultData.getInstance().makeDefaultCategory();
+					saveCategory(list);
+				}
+				emitter.onNext(list);
+
+			}
+		});
+	}
+
+	@Override
+	public Observable<Integer> saveCategory(List<Category> list) {
+		return Observable.create(new ObservableOnSubscribe<Integer>() {
+			@Override
+			public void subscribe(@NonNull ObservableEmitter<Integer> emitter) throws Throwable {
+				int count = db.insertCategory(list);
+				emitter.onNext(count);
+			}
+		});
 	}
 }

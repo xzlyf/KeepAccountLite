@@ -218,6 +218,7 @@ public class DBManager {
 	============================分类表操作=============================
 	 */
 
+
 	/**
 	 * 新增分类标签
 	 */
@@ -229,6 +230,34 @@ public class DBManager {
 		cv.put(FIELD_CATEGORY_INOUT, category.getInout());
 		db.insert(TABLE_CATEGORY, null, cv);
 		db.close();
+	}
+
+	/**
+	 * 新增分类标签 (开启事务-快速插入)
+	 *
+	 * @return 0 所有数据存入无错误   非0 错误数量
+	 */
+	public int insertCategory(List<Category> list) {
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		//开启事务
+		db.beginTransaction();
+		ContentValues cv;
+		int failedCount = 0;
+		try {
+			for (Category category : list) {
+				cv = new ContentValues();
+				cv.put(FIELD_CATEGORY_LABEL, category.getLabel());
+				cv.put(FIELD_CATEGORY_ICON, category.getIcon());
+				cv.put(FIELD_CATEGORY_INOUT, category.getInout());
+				db.insert(TABLE_CATEGORY, null, cv);
+			}
+			db.setTransactionSuccessful();
+		} catch (Exception e) {
+			failedCount -= 1;
+		} finally {
+			db.endTransaction();
+		}
+		return failedCount;
 	}
 
 	/**
@@ -277,7 +306,7 @@ public class DBManager {
 				category = new Category();
 				category.setId(cursor.getInt(0));
 				category.setLabel(cursor.getString(1));
-				category.setIcon(cursor.getString(2));
+				category.setIcon(cursor.getInt(2));
 				category.setInout(cursor.getString(3));
 				list.add(category);
 			}

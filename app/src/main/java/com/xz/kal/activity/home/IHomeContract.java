@@ -26,6 +26,9 @@ public interface IHomeContract {
 
 		//获取所有分类标签数据，包括默认标签和用户自定标签
 		Observable<List<Category>> getCategory();
+
+		//存储分类标签数据
+		Observable<Integer> saveCategory(List<Category> list);
 	}
 
 	interface IPresenter {

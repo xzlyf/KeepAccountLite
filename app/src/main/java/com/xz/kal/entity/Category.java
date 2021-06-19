@@ -8,8 +8,17 @@ package com.xz.kal.entity;
 public class Category {
 	private int id;
 	private String label;
-	private String icon;
+	private int icon;
 	private String inout;
+
+	public Category() {
+	}
+
+	public Category(String label, int icon, String inout) {
+		this.label = label;
+		this.icon = icon;
+		this.inout = inout;
+	}
 
 	public int getId() {
 		return id;
@@ -27,11 +36,11 @@ public class Category {
 		this.label = label;
 	}
 
-	public String getIcon() {
+	public int getIcon() {
 		return icon;
 	}
 
-	public void setIcon(String icon) {
+	public void setIcon(int icon) {
 		this.icon = icon;
 	}
 
