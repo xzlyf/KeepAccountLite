@@ -13,7 +13,6 @@ import com.xz.kal.adapter.BillAdapter;
 import com.xz.kal.base.BaseActivity;
 import com.xz.kal.custom.SlideRecyclerView;
 import com.xz.kal.entity.Bill;
-import com.xz.kal.utils.SpacesItemDecorationVertical;
 
 import java.util.List;
 
@@ -24,12 +23,6 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 
 	@BindView(R.id.recycler_money)
 	SlideRecyclerView recyclerMoney;
-	@BindView(R.id.btn_detail)
-	Button btnDetail;
-	@BindView(R.id.btn_my)
-	Button btnMy;
-	@BindView(R.id.btn_add)
-	ImageButton btnAdd;
 
 	private Presenter mPresenter;
 	private BillAdapter billAdapter;
