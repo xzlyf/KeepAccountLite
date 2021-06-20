@@ -11,6 +11,8 @@
     <color name="divider">#BDBDBD</color>
     <color name="dark">#EBEBEB</color>
 
+    <color name="main_background">#F4F4F4</color>
+
     <color name="white">#FFFFFFFF</color>
     <color name="red">#DD3434</color>
     <color name="red_press">#8D2121</color>

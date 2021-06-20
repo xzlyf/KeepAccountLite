@@ -13,6 +13,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!--状态栏背景颜色-->
+        <item name="android:statusBarColor">@color/main_background</item>
+        <!--状态栏黑字-->
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="CommonWhiteText">

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_background"
     android:clipChildren="false"
     android:orientation="vertical"
     tools:context=".activity.home.MainActivity">
@@ -14,16 +15,27 @@
         app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
         app:layout_constraintTop_toTopOf="parent">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/bg_main_top"
+                android:elevation="5dp">
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <com.xz.kal.custom.SlideRecyclerView
                 android:id="@+id/recycler_money"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:overScrollMode="never"/>
+                android:layout_height="wrap_content"
+                android:overScrollMode="never" />
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

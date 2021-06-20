@@ -1,5 +1,8 @@
 package com.xz.kal.activity.home;
 
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -44,9 +47,22 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 	@Override
 	public void initData() {
 		mPresenter = new Presenter(this);
+		changeNavigatorBar();
 		initView();
 		//获取今日的账单
 		mPresenter.getBill();
+	}
+
+	/**
+	 * 底部导航栏颜色
+	 */
+	private void changeNavigatorBar() {
+		int vis = getWindow().getDecorView().getSystemUiVisibility();
+		vis |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+		getWindow().getDecorView().setSystemUiVisibility(vis);
+		Window window = getWindow();
+		window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+		window.setNavigationBarColor(getResources().getColor(R.color.white));
 	}
 
 	private void initView() {
