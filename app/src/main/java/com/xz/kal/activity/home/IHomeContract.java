@@ -50,13 +50,5 @@ public interface IHomeContract {
 
 		void refresh(List<Bill> list);
 
-		void setDay(Calendar calendar);
-
-		void setDayMoney(String st);
-
-		void setMonth(Calendar calendar);
-
-		void setMonthMoney(String st);
-
 	}
 }

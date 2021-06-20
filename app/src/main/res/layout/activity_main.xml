@@ -14,35 +14,16 @@
         app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
         app:layout_constraintTop_toTopOf="parent">
 
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <FrameLayout
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/top_page"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:background="@color/colorPrimary" />
-
-                <me.relex.circleindicator.CircleIndicator
-                    android:id="@+id/indicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="38dp"
-                    android:layout_gravity="bottom" />
-            </FrameLayout>
-
             <com.xz.kal.custom.SlideRecyclerView
                 android:id="@+id/recycler_money"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:overScrollMode="never"
-                app:empty_image_src="@drawable/ic_empty_tips" />
+                android:layout_height="match_parent"
+                android:overScrollMode="never"/>
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

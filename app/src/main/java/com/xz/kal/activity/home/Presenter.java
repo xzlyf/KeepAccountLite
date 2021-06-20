@@ -1,10 +1,10 @@
 package com.xz.kal.activity.home;
 
-import com.orhanobut.logger.Logger;
 import com.xz.kal.constant.Local;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -22,29 +22,37 @@ public class Presenter implements IHomeContract.IPresenter {
 	public static final String TAG = Presenter.class.getName();
 	private IHomeContract.IView mView;
 	private IHomeContract.IModel model;
+	private Calendar dayCal = Calendar.getInstance();
+	private Calendar monthCal = Calendar.getInstance();
+
 
 	Presenter(IHomeContract.IView view) {
 		mView = view;
 		model = new Model();
-		model.getCategory()
-				.subscribeOn(Schedulers.newThread())
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(new BlockingBaseObserver<List<Category>>() {
-					@Override
-					public void onNext(@NonNull List<Category> list) {
-						Local.categories = list;
-					}
-
-					@Override
-					public void onError(@NonNull Throwable e) {
-
-					}
-				});
 	}
 
 	@Override
 	public void getBill() {
-		getBill(new Date(), new Date());
+		//先获取分类标签数据再获取标签数据
+		if (Local.categories == null) {
+			model.getCategory()
+					.subscribeOn(Schedulers.newThread())
+					.observeOn(AndroidSchedulers.mainThread())
+					.subscribe(new BlockingBaseObserver<List<Category>>() {
+						@Override
+						public void onNext(@NonNull List<Category> list) {
+							Local.categories = list;
+							getBill(new Date(), new Date());
+						}
+
+						@Override
+						public void onError(@NonNull Throwable e) {
+
+						}
+					});
+		} else {
+			getBill(new Date(), new Date());
+		}
 	}
 
 	@Override
