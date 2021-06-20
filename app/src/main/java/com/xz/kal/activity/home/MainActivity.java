@@ -3,26 +3,36 @@ package com.xz.kal.activity.home;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.xz.kal.R;
 import com.xz.kal.adapter.BillAdapter;
 import com.xz.kal.base.BaseActivity;
+import com.xz.kal.constant.Local;
 import com.xz.kal.custom.SlideRecyclerView;
 import com.xz.kal.entity.Bill;
+import com.xz.kal.entity.DayBill;
+import com.xz.kal.utils.TimeUtil;
 
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity implements IHomeContract.IView {
 
 
 	@BindView(R.id.recycler_money)
 	SlideRecyclerView recyclerMoney;
+	@BindView(R.id.tv_day)
+	TextView tvDay;
+	@BindView(R.id.tv_day_in)
+	TextView tvDayIn;
+	@BindView(R.id.tv_day_out)
+	TextView tvDayOut;
 
 	private Presenter mPresenter;
 	private BillAdapter billAdapter;
@@ -64,10 +74,27 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 		recyclerMoney.setAdapter(billAdapter);
 	}
 
+	@OnClick(R.id.tv_add)
+	public void onViewClick(View v) {
+
+	}
+
+	@Override
+	public void today(Calendar calendar) {
+		tvDay.setText(TimeUtil.getSimMilliDate("MM月dd日", calendar.getTimeInMillis()));
+	}
+
+	@Override
+	public void todayBill(DayBill dayBill) {
+		tvDayIn.setText(String.format("%s+%s", Local.symbol, dayBill.getDayIn()));
+		tvDayOut.setText(String.format("%s-%s", Local.symbol, dayBill.getDayOut()));
+	}
+
 	@Override
 	public void refresh(List<Bill> list) {
 		if (list != null) {
 			billAdapter.superRefresh(list);
 		}
 	}
+
 }

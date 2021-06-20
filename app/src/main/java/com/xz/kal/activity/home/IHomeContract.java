@@ -3,6 +3,7 @@ package com.xz.kal.activity.home;
 
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
+import com.xz.kal.entity.DayBill;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -47,6 +48,10 @@ public interface IHomeContract {
 		void disLoading();
 
 		void sToast(String message);
+
+		void today(Calendar calendar);
+
+		void todayBill(DayBill dayBill);
 
 		void refresh(List<Bill> list);
 

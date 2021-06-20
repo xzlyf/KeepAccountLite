@@ -31,29 +31,28 @@
                 android:background="@drawable/bg_main_top">
 
                 <View
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_marginTop="118dp"
-                    android:background="@drawable/bg_top_add"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageButton
-                    android:id="@+id/ic_add"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:elevation="2dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="1dp"
-                    android:background="@drawable/select_yuanxin_btn"
-                    android:padding="15dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_add"
+                    android:id="@+id/ic_add_bg"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:background="@drawable/ic_add_bg_v2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/tv_add"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/select_yuanxin_btn"
+                    android:elevation="2dp"
+                    android:padding="15dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_add"
+                    app:layout_constraintBottom_toBottomOf="@id/ic_add_bg"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/ic_add_bg" />
 
                 <TextView
                     android:id="@+id/tv_day"
@@ -62,9 +61,64 @@
                     android:layout_margin="20dp"
                     android:text="n月n日"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="今日支出"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_day_in"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/ic_add_bg" />
+
+                <TextView
+                    android:id="@+id/tv_day_in"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="￥0"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/ic_add_bg" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="今日收入"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_day_out"
+                    app:layout_constraintLeft_toRightOf="@+id/ic_add_bg"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_day_out"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="￥0"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/ic_add_bg"
+                    app:layout_constraintRight_toRightOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.xz.kal.custom.SlideRecyclerView
