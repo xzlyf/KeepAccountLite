@@ -12,6 +12,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -74,12 +75,12 @@
                     android:text="今日支出"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    app:layout_constraintBottom_toTopOf="@+id/tv_day_in"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_day_out"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/ic_add_bg" />
 
                 <TextView
-                    android:id="@+id/tv_day_in"
+                    android:id="@+id/tv_day_out"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
@@ -101,12 +102,12 @@
                     android:text="今日收入"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    app:layout_constraintBottom_toTopOf="@+id/tv_day_out"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_day_in"
                     app:layout_constraintLeft_toRightOf="@+id/ic_add_bg"
                     app:layout_constraintRight_toRightOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_day_out"
+                    android:id="@+id/tv_day_in"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
@@ -121,13 +122,14 @@
                     app:layout_constraintRight_toRightOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.xz.kal.custom.SlideRecyclerView
+            <com.xz.kal.custom.EmptyTipsRecyclerView
                 android:id="@+id/recycler_money"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:overScrollMode="never" />
+                android:overScrollMode="never"
+                app:empty_image="@drawable/ic_empty_tips" />
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

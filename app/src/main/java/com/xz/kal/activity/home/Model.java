@@ -1,10 +1,12 @@
 package com.xz.kal.activity.home;
 
 
-import com.orhanobut.logger.Logger;
+import android.util.Log;
+
 import com.xz.kal.base.BaseApplication;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
+import com.xz.kal.entity.DayBill;
 import com.xz.kal.sql.DBManager;
 import com.xz.kal.sql.DefaultData;
 
@@ -51,8 +53,22 @@ public class Model implements IHomeContract.IModel {
 	}
 
 	@Override
-	public Observable<String> calcBill(Date start, Date end) {
-		return null;
+	public Observable<DayBill> calcBill(Date start, Date end) {
+		//查询时间为开始时间的00:00:00 结束时间的第二天的00:00:00
+		start.setHours(0);
+		start.setMinutes(0);
+		start.setSeconds(0);
+		end.setTime(end.getTime() + 86400000L);//获取第二天
+		end.setHours(0);
+		end.setMinutes(0);
+		end.setSeconds(0);
+		return Observable.create(new ObservableOnSubscribe<DayBill>() {
+			@Override
+			public void subscribe(@NonNull ObservableEmitter<DayBill> emitter) throws Throwable {
+				DayBill dayBill = db.calcBill(start, end);
+				emitter.onNext(dayBill);
+			}
+		});
 	}
 
 	@Override

@@ -4,13 +4,17 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.SystemClock;
+import android.util.Log;
 
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
+import com.xz.kal.entity.DayBill;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import static com.xz.kal.sql.DBHelper.FIELD_CATEGORY_ICON;
 import static com.xz.kal.sql.DBHelper.FIELD_CATEGORY_ID;
@@ -321,13 +325,56 @@ public class DBManager {
 		return list;
 	}
 
+	/**
+	 * 计算一天的账单金额
+	 *
+	 * @param start 开始日期 00:00:00
+	 * @param end   结束日期是开始日期的第二天的00:00:00
+	 * @return 账单金额数据
+	 */
+	public DayBill calcBill(Date start, Date end) {
+		SystemClock.sleep(2000);
+		//查询指定日期的收入金额sql语句
+		String sqlIn = "SELECT sum(" + FIELD_COMMON_MONEY + ") FROM " + TABLE_COMMON + " where inout =\"in\" and " + FIELD_COMMON_CREATE + " between " + start.getTime() + " and " + end.getTime();
+		//查询指定日期的支出金额sql语句
+		String sqlOut = "SELECT sum(" + FIELD_COMMON_MONEY + ") FROM " + TABLE_COMMON + " where inout =\"out\" and " + FIELD_COMMON_CREATE + " between " + start.getTime() + " and " + end.getTime();
+		DayBill dayBill = new DayBill();
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		Cursor cursor = null;
+		try {
+			cursor = db.rawQuery(sqlIn, null);
+			if (cursor.moveToFirst()) {
+				double total = cursor.getDouble(cursor.getColumnIndex("sum(money)"));
+				dayBill.setDayIn(total);
+			}
+			cursor = db.rawQuery(sqlOut, null);
+			if (cursor.moveToFirst()) {
+				double total = cursor.getDouble(cursor.getColumnIndex("sum(money)"));
+				dayBill.setDayOut(total);
+			}
+			//todo 计算今日收支总和
+		} catch (Exception e) {
+			e.printStackTrace();
+			dayBill.setDayIn(-1f);
+			dayBill.setDayOut(-1f);
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+			db.close();
+		}
+
+		return dayBill;
+	}
+
 
 	public void testData() {
+		Random random = new Random();
 		for (int i = 0; i < 10; i++) {
 			Bill bill = new Bill();
 			bill.setCategoryId(i + 1);
 			bill.setInout(Math.random() > 0.5 ? "in" : "out");
-			bill.setMoney(Math.random());
+			bill.setMoney(random.nextInt(100));
 			bill.setRemark("没有备注");
 			bill.setCreateTime(new Date());
 			bill.setUpdateTime(new Date());

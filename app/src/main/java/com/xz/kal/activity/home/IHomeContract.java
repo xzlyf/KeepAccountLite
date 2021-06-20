@@ -23,7 +23,7 @@ public interface IHomeContract {
 		Observable<List<Bill>> getBill(Date start, Date end);
 
 		//计算指定时间范围的账单金额 日期格式 yyyy-MM-dd
-		Observable<String> calcBill(Date start, Date end);
+		Observable<DayBill> calcBill(Date start, Date end);
 
 		//获取所有分类标签数据，包括默认标签和用户自定标签
 		Observable<List<Category>> getCategory();
@@ -33,12 +33,18 @@ public interface IHomeContract {
 	}
 
 	interface IPresenter {
+		void getToday();
+
 		//获取今天的账单
 		void getBill();
 
 		//获取指定日期的账单
 		void getBill(Date start, Date end);
 
+		//获取今天的账单
+		void calcBill();
+
+		//计算指定日期的账单
 		void calcBill(Date start, Date end);
 	}
 

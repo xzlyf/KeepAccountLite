@@ -11,11 +11,12 @@ import com.xz.kal.R;
 import com.xz.kal.adapter.BillAdapter;
 import com.xz.kal.base.BaseActivity;
 import com.xz.kal.constant.Local;
-import com.xz.kal.custom.SlideRecyclerView;
+import com.xz.kal.custom.EmptyTipsRecyclerView;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.DayBill;
 import com.xz.kal.utils.TimeUtil;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -26,13 +27,13 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 
 
 	@BindView(R.id.recycler_money)
-	SlideRecyclerView recyclerMoney;
+	EmptyTipsRecyclerView recyclerMoney;
 	@BindView(R.id.tv_day)
 	TextView tvDay;
-	@BindView(R.id.tv_day_in)
-	TextView tvDayIn;
 	@BindView(R.id.tv_day_out)
 	TextView tvDayOut;
+	@BindView(R.id.tv_day_in)
+	TextView tvDayIn;
 
 	private Presenter mPresenter;
 	private BillAdapter billAdapter;
@@ -54,6 +55,10 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 		initView();
 		//获取今日的账单
 		mPresenter.getBill();
+		//获取今日日期
+		mPresenter.getToday();
+		//获取今日账单金额
+		mPresenter.calcBill();
 	}
 
 	/**
@@ -76,12 +81,11 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 
 	@OnClick(R.id.tv_add)
 	public void onViewClick(View v) {
-
 	}
 
 	@Override
 	public void today(Calendar calendar) {
-		tvDay.setText(TimeUtil.getSimMilliDate("MM月dd日", calendar.getTimeInMillis()));
+		tvDay.setText(TimeUtil.getSimMilliDate("M月d日", calendar.getTimeInMillis()));
 	}
 
 	@Override
@@ -94,6 +98,8 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 	public void refresh(List<Bill> list) {
 		if (list != null) {
 			billAdapter.superRefresh(list);
+		} else {
+			billAdapter.superRefresh(new ArrayList<>());
 		}
 	}
 

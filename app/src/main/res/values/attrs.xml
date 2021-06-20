@@ -10,5 +10,8 @@
         <!--空数据图片显示-->
         <attr name="empty_image_src" format="reference" />
     </declare-styleable>
-
+    <declare-styleable name="EmptyTipsRecyclerView">
+        <!--空数据图片显示-->
+        <attr name="empty_image" format="reference" />
+    </declare-styleable>
 </resources>

@@ -3,6 +3,7 @@ package com.xz.kal.activity.home;
 import com.xz.kal.constant.Local;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
+import com.xz.kal.entity.DayBill;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -22,13 +23,18 @@ public class Presenter implements IHomeContract.IPresenter {
 	public static final String TAG = Presenter.class.getName();
 	private IHomeContract.IView mView;
 	private IHomeContract.IModel model;
-	private Calendar dayCal = Calendar.getInstance();
-	private Calendar monthCal = Calendar.getInstance();
+	private Calendar dayCal;
 
 
 	Presenter(IHomeContract.IView view) {
 		mView = view;
 		model = new Model();
+		dayCal = Calendar.getInstance();
+	}
+
+	@Override
+	public void getToday() {
+		mView.today(dayCal);
 	}
 
 	@Override
@@ -79,7 +85,28 @@ public class Presenter implements IHomeContract.IPresenter {
 	}
 
 	@Override
-	public void calcBill(Date start, Date end) {
+	public void calcBill() {
+		calcBill(new Date(), new Date());
+	}
 
+	@Override
+	public void calcBill(Date start, Date end) {
+		model.calcBill(start, end)
+				.subscribeOn(Schedulers.newThread())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new BlockingBaseObserver<DayBill>() {
+					@Override
+					public void onNext(@NonNull DayBill dayBill) {
+						mView.todayBill(dayBill);
+					}
+
+					@Override
+					public void onError(@NonNull Throwable e) {
+						DayBill err = new DayBill();
+						err.setDayIn(0.0f);
+						err.setDayOut(0.0f);
+						mView.todayBill(err);
+					}
+				});
 	}
 }

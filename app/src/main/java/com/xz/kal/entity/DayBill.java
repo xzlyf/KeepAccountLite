@@ -6,24 +6,34 @@ package com.xz.kal.entity;
  * @date 2021/6/20
  */
 public class DayBill {
+	//今日收支总额
+	private double total;
 	//今日收入金额
-	public  String dayIn;
+	private double dayIn;
 	//进入支出金额
-	public  String dayOut;
+	private double dayOut;
 
-	public String getDayIn() {
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
+	}
+
+	public double getDayIn() {
 		return dayIn;
 	}
 
-	public void setDayIn(String dayIn) {
+	public void setDayIn(double dayIn) {
 		this.dayIn = dayIn;
 	}
 
-	public String getDayOut() {
+	public double getDayOut() {
 		return dayOut;
 	}
 
-	public void setDayOut(String dayOut) {
+	public void setDayOut(double dayOut) {
 		this.dayOut = dayOut;
 	}
 }
