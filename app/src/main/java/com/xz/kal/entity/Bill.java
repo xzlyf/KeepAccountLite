@@ -32,7 +32,7 @@ public class Bill {
 		this.categoryId = categoryId;
 	}
 
-	public String isInout() {
+	public String getInout() {
 		return inout;
 	}
 

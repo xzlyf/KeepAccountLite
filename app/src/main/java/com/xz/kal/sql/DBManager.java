@@ -91,7 +91,7 @@ public class DBManager {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		ContentValues cv = new ContentValues();
 		cv.put(FIELD_COMMON_CATEGORY_ID, bill.getCategoryId());
-		cv.put(FIELD_COMMON_INOUT, bill.isInout());
+		cv.put(FIELD_COMMON_INOUT, bill.getInout());
 		cv.put(FIELD_COMMON_MONEY, bill.getMoney());
 		cv.put(FIELD_COMMON_REMARK, bill.getRemark());
 		cv.put(FIELD_COMMON_UPDATE, bill.getUpdateTime().getTime());
@@ -124,7 +124,7 @@ public class DBManager {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		ContentValues cv = new ContentValues();
 		cv.put(FIELD_COMMON_CATEGORY_ID, bill.getCategoryId());
-		cv.put(FIELD_COMMON_INOUT, bill.isInout());
+		cv.put(FIELD_COMMON_INOUT, bill.getInout());
 		cv.put(FIELD_COMMON_MONEY, bill.getMoney());
 		cv.put(FIELD_COMMON_REMARK, bill.getRemark());
 		cv.put(FIELD_COMMON_UPDATE, bill.getUpdateTime().getTime());

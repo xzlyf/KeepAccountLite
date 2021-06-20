@@ -1,93 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.percentlayout.widget.PercentFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
+
+    <!--支出布局-->
     <LinearLayout
+        android:id="@+id/layout_out"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_yuanjiao"
-        android:orientation="horizontal">
-
-        <FrameLayout
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/background_yuanjiao_left"
-            android:padding="5dp">
-
-            <ImageView
-                android:id="@+id/id_type_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:src="@drawable/ic_add" />
-        </FrameLayout>
+        android:layout_gravity="start|center"
+        android:orientation="vertical"
+        app:layout_widthPercent="50%">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical"
-            android:paddingStart="12dp">
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp">
 
             <TextView
-                android:id="@+id/id_type_name"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:id="@+id/out_time"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="购物"
-                android:textColor="@color/primary_text"
+                android:text="2021-10-10 11:11"
+                android:textColor="@color/secondary_text"
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/remark"
+                android:id="@+id/out_category"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="2dp"
-                android:layout_weight="1"
-                android:ellipsize="marquee"
-                android:focusable="true"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:maxEms="12"
-                android:maxLength="50"
-                android:singleLine="true"
-                android:text="今天捡到钱啦！！！"
-                android:textSize="12sp" />
+                android:layout_height="match_parent"
+                android:text="支出"
+                android:textColor="@color/secondary_text"
+                android:textSize="14sp" />
         </LinearLayout>
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/out_icon"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/background_yuanjiao_left"
+                android:padding="10dp"
+                android:src="@mipmap/ic_bangon" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/out_symbol"
+                    style="@style/ItemBill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="￥" />
+
+                <TextView
+                    android:id="@+id/out_money"
+                    style="@style/ItemBill"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="end|center"
+                    android:text="-10000" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <!--收入布局-->
+    <LinearLayout
+        android:id="@+id/layout_in"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center"
+        android:orientation="vertical"
+        app:layout_widthPercent="50%">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp">
 
             <TextView
-                android:id="@+id/money_text"
+                android:id="@+id/in_category"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginEnd="10dp"
-                android:text="-180￥"
-                android:textSize="18sp" />
-        </FrameLayout>
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="收入"
+                android:textColor="@color/secondary_text"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/in_time"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="11:11"
+                android:textColor="@color/secondary_text"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/in_symbol"
+                    style="@style/ItemBill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="￥" />
+
+                <TextView
+                    android:id="@+id/in_money"
+                    style="@style/ItemBill"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="end|center"
+                    android:text="￥ +10000" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/in_icon"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/background_yuanjiao_right"
+                android:padding="10dp"
+                android:src="@mipmap/ic_bangon" />
+        </LinearLayout>
+
+
     </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="100dp"
-        android:layout_height="match_parent">
+    <!--中间的线-->
+    <View
+        android:layout_width="1dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_line_vertical" />
 
-        <TextView
-            android:id="@+id/tv_delete"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/background_yuanjiao_right_red"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:text="删除"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-    </FrameLayout>
-</LinearLayout>
+</androidx.percentlayout.widget.PercentFrameLayout>

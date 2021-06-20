@@ -10,6 +10,9 @@ import java.util.List;
  * @date 2021/6/17
  */
 public class Local {
+	//进出标识
+	public static final CharSequence SYMBOL_IN = "in";
+	public static final CharSequence SYMBOL_OUT = "out";
 	//货币符号，可变
 	public static String symbol = "￥";
 	//分类标签数据

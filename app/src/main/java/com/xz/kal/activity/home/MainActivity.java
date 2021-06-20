@@ -67,7 +67,6 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 
 	private void initView() {
 		recyclerMoney.setLayoutManager(new LinearLayoutManager(mContext));
-		recyclerMoney.addItemDecoration(new SpacesItemDecorationVertical(10));
 		billAdapter = new BillAdapter(mContext);
 		recyclerMoney.setAdapter(billAdapter);
 	}
