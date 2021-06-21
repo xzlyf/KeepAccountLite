@@ -37,6 +37,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
     //logger
     implementation 'com.orhanobut:logger:2.2.0'
     //butterknife
@@ -47,4 +48,6 @@ dependencies {
     //rxjava
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
+    //tabLayout
+    implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
 }

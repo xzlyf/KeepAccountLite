@@ -1,6 +1,7 @@
 package com.xz.kal.activity.home;
 
 
+import com.orhanobut.logger.Logger;
 import com.xz.kal.base.BaseApplication;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
@@ -77,7 +78,9 @@ public class Model implements IHomeContract.IModel {
 			@Override
 			public void subscribe(@NonNull ObservableEmitter<Map<Integer, Category>> emitter) throws Throwable {
 				List<Category> list = db.queryCategory();
+				Logger.d("数据"+list.size());
 				if (list.size() == 0) {
+					Logger.d("数据库没有数据");
 					//等于空，那重新生成默认分类给数据库
 					list = DefaultData.getInstance().makeDefaultCategory();
 					saveCategory(list);

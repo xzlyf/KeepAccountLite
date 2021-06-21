@@ -14,7 +14,8 @@ public class Category {
 	public Category() {
 	}
 
-	public Category(String label, int icon, String inout) {
+	public Category(int id, String label, int icon, String inout) {
+		this.id = id;
 		this.label = label;
 		this.icon = icon;
 		this.inout = inout;

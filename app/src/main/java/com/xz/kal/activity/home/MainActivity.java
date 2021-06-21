@@ -1,5 +1,6 @@
 package com.xz.kal.activity.home;
 
+import android.content.Intent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.xz.kal.R;
+import com.xz.kal.activity.AddActivity;
 import com.xz.kal.adapter.BillAdapter;
 import com.xz.kal.base.BaseActivity;
 import com.xz.kal.constant.Local;
@@ -81,6 +83,11 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 
 	@OnClick(R.id.tv_add)
 	public void onViewClick(View v) {
+		switch (v.getId()) {
+			case R.id.tv_add:
+				startActivity(new Intent(mContext, AddActivity.class));
+				break;
+		}
 	}
 
 	@Override
