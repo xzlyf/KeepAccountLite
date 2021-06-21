@@ -66,7 +66,7 @@ public class DBManager {
 	 * @param tableName 表明
 	 */
 	public long queryTotal(String tableName) {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		SQLiteDatabase db = dbHelper.openDB();
 		String sql = "select count(*) from " + tableName;
 		Cursor cursor = null;
 		try {
@@ -92,7 +92,7 @@ public class DBManager {
 	 * 新增记账
 	 */
 	public void insertBill(Bill bill) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		SQLiteDatabase db = dbHelper.openDB();
 		ContentValues cv = new ContentValues();
 		cv.put(FIELD_COMMON_CATEGORY_ID, bill.getCategoryId());
 		cv.put(FIELD_COMMON_INOUT, bill.getInout());
@@ -101,7 +101,7 @@ public class DBManager {
 		cv.put(FIELD_COMMON_UPDATE, bill.getUpdateTime().getTime());
 		cv.put(FIELD_COMMON_CREATE, bill.getCreateTime().getTime());
 		db.insert(TABLE_COMMON, null, cv);
-		db.close();
+		dbHelper.closeDB();
 	}
 
 	/**
@@ -111,9 +111,9 @@ public class DBManager {
 	 */
 
 	public int deleteBill(int id) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		SQLiteDatabase db = dbHelper.openDB();
 		int line = db.delete(TABLE_COMMON, FIELD_COMMON_ID + "=?", new String[]{String.valueOf(id)});
-		db.close();
+		dbHelper.closeDB();
 		return line;
 
 	}
@@ -125,7 +125,7 @@ public class DBManager {
 	 * @param bill 新的账目
 	 */
 	public int updateBill(int id, Bill bill) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		SQLiteDatabase db = dbHelper.openDB();
 		ContentValues cv = new ContentValues();
 		cv.put(FIELD_COMMON_CATEGORY_ID, bill.getCategoryId());
 		cv.put(FIELD_COMMON_INOUT, bill.getInout());
@@ -134,7 +134,7 @@ public class DBManager {
 		cv.put(FIELD_COMMON_UPDATE, bill.getUpdateTime().getTime());
 		cv.put(FIELD_COMMON_CREATE, bill.getCreateTime().getTime());
 		int line = db.update(TABLE_COMMON, cv, FIELD_COMMON_ID + "=?", new String[]{String.valueOf(id)});
-		db.close();
+		dbHelper.closeDB();
 		return line;
 	}
 
@@ -142,7 +142,7 @@ public class DBManager {
 	 * 查询记账
 	 */
 	public List<Bill> queryBill() {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		SQLiteDatabase db = dbHelper.openDB();
 		String sql = "select * from " + TABLE_COMMON;
 		Cursor cursor = null;
 		List<Bill> list = new ArrayList<>();
@@ -166,7 +166,7 @@ public class DBManager {
 			if (cursor != null) {
 				cursor.close();
 			}
-			db.close();
+			dbHelper.closeDB();
 		}
 		return list;
 	}
@@ -179,7 +179,7 @@ public class DBManager {
 	 * @param end   结束时间 yyyy-MM-dd 的毫秒级时间戳
 	 */
 	public List<Bill> queryBill(long start, long end) {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		SQLiteDatabase db = dbHelper.openDB();
 		StringBuilder sqlBuild = new StringBuilder();
 		sqlBuild.append("select ")
 				.append(" * ")
@@ -227,13 +227,13 @@ public class DBManager {
 	 * 新增分类标签
 	 */
 	public void insertCategory(Category category) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		SQLiteDatabase db = dbHelper.openDB();
 		ContentValues cv = new ContentValues();
 		cv.put(FIELD_CATEGORY_LABEL, category.getLabel());
 		cv.put(FIELD_CATEGORY_ICON, category.getIcon());
 		cv.put(FIELD_CATEGORY_INOUT, category.getInout());
 		db.insert(TABLE_CATEGORY, null, cv);
-		db.close();
+		dbHelper.closeDB();
 	}
 
 	/**
@@ -242,7 +242,7 @@ public class DBManager {
 	 * @return 0 所有数据存入无错误   非0 错误数量
 	 */
 	public int insertCategory(List<Category> list) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		SQLiteDatabase db = dbHelper.openDB();
 		//开启事务
 		db.beginTransaction();
 		ContentValues cv;
@@ -271,9 +271,9 @@ public class DBManager {
 	 */
 
 	public int deleteCategory(int id) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		SQLiteDatabase db = dbHelper.openDB();
 		int line = db.delete(TABLE_CATEGORY, FIELD_CATEGORY_ID + "=?", new String[]{String.valueOf(id)});
-		db.close();
+		dbHelper.closeDB();
 		return line;
 
 	}
@@ -285,13 +285,13 @@ public class DBManager {
 	 * @param category 新的分类
 	 */
 	public int updateCategory(int id, Category category) {
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		SQLiteDatabase db = dbHelper.openDB();
 		ContentValues cv = new ContentValues();
 		cv.put(FIELD_CATEGORY_LABEL, category.getLabel());
 		cv.put(FIELD_CATEGORY_ICON, category.getIcon());
 		cv.put(FIELD_CATEGORY_INOUT, category.getInout());
 		int line = db.update(TABLE_CATEGORY, cv, FIELD_CATEGORY_ID + "=?", new String[]{String.valueOf(id)});
-		db.close();
+		dbHelper.closeDB();
 		return line;
 	}
 
@@ -299,7 +299,7 @@ public class DBManager {
 	 * 查询分类
 	 */
 	public List<Category> queryCategory() {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		SQLiteDatabase db = dbHelper.openDB();
 		String sql = "select * from " + TABLE_CATEGORY;
 		Cursor cursor = null;
 		List<Category> list = new ArrayList<>();
@@ -320,7 +320,7 @@ public class DBManager {
 			if (cursor != null) {
 				cursor.close();
 			}
-			db.close();
+			dbHelper.closeDB();
 		}
 		return list;
 	}
@@ -338,7 +338,7 @@ public class DBManager {
 		//查询指定日期的支出金额sql语句
 		String sqlOut = "SELECT sum(" + FIELD_COMMON_MONEY + ") FROM " + TABLE_COMMON + " where inout =\"out\" and " + FIELD_COMMON_CREATE + " between " + start.getTime() + " and " + end.getTime();
 		DayBill dayBill = new DayBill();
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		SQLiteDatabase db = dbHelper.openDB();
 		Cursor cursor = null;
 		try {
 			cursor = db.rawQuery(sqlIn, null);
@@ -360,7 +360,7 @@ public class DBManager {
 			if (cursor != null) {
 				cursor.close();
 			}
-			db.close();
+			dbHelper.closeDB();
 		}
 
 		return dayBill;
