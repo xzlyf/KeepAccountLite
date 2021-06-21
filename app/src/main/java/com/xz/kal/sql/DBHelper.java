@@ -60,8 +60,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	private void createTable(SQLiteDatabase db) {
 		String sql_category = "CREATE TABLE category (" +
 				"    id    INTEGER PRIMARY KEY AUTOINCREMENT," +
-				"    label TEXT    NOT NULL" +
-				"                  UNIQUE," +
+				"    label TEXT    NOT NULL," +
 				"    icon  TEXT    NOT NULL," +
 				"    inout VARCHAR(32) " +
 				");";

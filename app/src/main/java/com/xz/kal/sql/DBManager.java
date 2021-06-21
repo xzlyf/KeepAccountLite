@@ -256,7 +256,7 @@ public class DBManager {
 				db.insert(TABLE_CATEGORY, null, cv);
 			}
 			db.setTransactionSuccessful();
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			failedCount -= 1;
 		} finally {
 			db.endTransaction();

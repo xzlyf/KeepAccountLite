@@ -78,12 +78,11 @@ public class Model implements IHomeContract.IModel {
 			@Override
 			public void subscribe(@NonNull ObservableEmitter<Map<Integer, Category>> emitter) throws Throwable {
 				List<Category> list = db.queryCategory();
-				Logger.d("数据"+list.size());
 				if (list.size() == 0) {
-					Logger.d("数据库没有数据");
 					//等于空，那重新生成默认分类给数据库
 					list = DefaultData.getInstance().makeDefaultCategory();
-					saveCategory(list);
+					//存储分类标签
+					db.insertCategory(list);
 				}
 
 				//填装map，供全局使用
