@@ -35,6 +35,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public static final String FIELD_KEEP_COUNT = "count";
 	public static final String FIELD_CONFIG_DATA = "data";
 
+
 	DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
 		super(context, name, factory, version);
 		//不可忽略的 进行so库加载
@@ -89,6 +90,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+		// TODO: 2021/6/21 解决sqlite多线程的问题
 	}
+
 }

@@ -8,6 +8,7 @@ import com.xz.kal.entity.DayBill;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.rxjava3.core.Observable;
 
@@ -26,7 +27,7 @@ public interface IHomeContract {
 		Observable<DayBill> calcBill(Date start, Date end);
 
 		//获取所有分类标签数据，包括默认标签和用户自定标签
-		Observable<List<Category>> getCategory();
+		Observable<Map<Integer, Category>> getCategory();
 
 		//存储分类标签数据
 		Observable<Integer> saveCategory(List<Category> list);

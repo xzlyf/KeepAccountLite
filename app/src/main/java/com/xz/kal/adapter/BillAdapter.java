@@ -15,6 +15,7 @@ import com.xz.kal.base.BaseRecyclerAdapter;
 import com.xz.kal.base.BaseRecyclerViewHolder;
 import com.xz.kal.constant.Local;
 import com.xz.kal.entity.Bill;
+import com.xz.kal.entity.Category;
 import com.xz.kal.utils.TimeUtil;
 
 import butterknife.BindView;
@@ -34,24 +35,28 @@ public class BillAdapter extends BaseRecyclerAdapter<Bill> {
 	protected void showViewHolder(BaseRecyclerViewHolder holder, int position) {
 		ViewHolder viewHolder = (ViewHolder) holder;
 		Bill bill = mList.get(position);
+		Category category = Local.categories.get(bill.getCategoryId());
+		if (category == null) {
+			category = new Category();
+			category.setLabel("未知");
+			category.setIcon(R.mipmap.ic_unknow);
+		}
 		if (TextUtils.equals(bill.getInout(), Local.SYMBOL_IN)) {
 			//收入布局
 			viewHolder.layoutOut.setVisibility(View.INVISIBLE);
-			viewHolder.inCategory.setText("收入");
-			viewHolder.inIcon.setImageResource(R.mipmap.ic_gongzi);
+			viewHolder.inCategory.setText(category.getLabel());
+			viewHolder.inIcon.setImageResource(category.getIcon());
 			viewHolder.inMoney.setText(String.format("+%s", bill.getMoney()));
 			viewHolder.inSymbol.setText(Local.symbol);
 			viewHolder.inTime.setText(TimeUtil.getSimMilliDate("HH:mm", bill.getCreateTime().getTime()));
 		} else if (TextUtils.equals(bill.getInout(), Local.SYMBOL_OUT)) {
 			//支出布局
 			viewHolder.layoutIn.setVisibility(View.INVISIBLE);
-			viewHolder.outCategory.setText("支出");
-			viewHolder.outIcon.setImageResource(R.mipmap.ic_shuma);
+			viewHolder.outCategory.setText(category.getLabel());
+			viewHolder.outIcon.setImageResource(category.getIcon());
 			viewHolder.outMoney.setText(String.format("-%s", bill.getMoney()));
 			viewHolder.outSymbol.setText(Local.symbol);
 			viewHolder.outTime.setText(TimeUtil.getSimMilliDate("HH:mm", bill.getCreateTime().getTime()));
-		} else {
-			//未知数据
 		}
 	}
 

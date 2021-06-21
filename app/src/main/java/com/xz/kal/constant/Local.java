@@ -2,7 +2,7 @@ package com.xz.kal.constant;
 
 import com.xz.kal.entity.Category;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author czr
@@ -16,5 +16,5 @@ public class Local {
 	//货币符号，可变
 	public static String symbol = "￥";
 	//分类标签数据
-	public static List<Category> categories;
+	public static Map<Integer, Category> categories;
 }

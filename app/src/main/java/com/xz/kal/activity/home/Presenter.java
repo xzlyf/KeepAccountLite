@@ -8,6 +8,7 @@ import com.xz.kal.entity.DayBill;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -44,9 +45,9 @@ public class Presenter implements IHomeContract.IPresenter {
 			model.getCategory()
 					.subscribeOn(Schedulers.newThread())
 					.observeOn(AndroidSchedulers.mainThread())
-					.subscribe(new BlockingBaseObserver<List<Category>>() {
+					.subscribe(new BlockingBaseObserver<Map<Integer, Category>>() {
 						@Override
-						public void onNext(@NonNull List<Category> list) {
+						public void onNext(@NonNull Map<Integer, Category> list) {
 							Local.categories = list;
 							getBill(new Date(), new Date());
 						}

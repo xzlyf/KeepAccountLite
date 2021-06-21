@@ -333,7 +333,6 @@ public class DBManager {
 	 * @return 账单金额数据
 	 */
 	public DayBill calcBill(Date start, Date end) {
-		SystemClock.sleep(2000);
 		//查询指定日期的收入金额sql语句
 		String sqlIn = "SELECT sum(" + FIELD_COMMON_MONEY + ") FROM " + TABLE_COMMON + " where inout =\"in\" and " + FIELD_COMMON_CREATE + " between " + start.getTime() + " and " + end.getTime();
 		//查询指定日期的支出金额sql语句
@@ -355,8 +354,8 @@ public class DBManager {
 			//todo 计算今日收支总和
 		} catch (Exception e) {
 			e.printStackTrace();
-			dayBill.setDayIn(-1f);
-			dayBill.setDayOut(-1f);
+			dayBill.setDayIn(1f);
+			dayBill.setDayOut(1f);
 		} finally {
 			if (cursor != null) {
 				cursor.close();
