@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.xz.kal.R;
 import com.xz.kal.base.BaseDialog;
+import com.xz.kal.constant.Local;
 import com.xz.kal.utils.DatePickerUtil;
 import com.xz.kal.utils.TimeUtil;
 
@@ -28,8 +29,6 @@ import java.util.regex.Pattern;
 
 public class MulKeyBoardDialog extends BaseDialog {
 
-	private KeyboardView mNumberView;   //数字键盘View
-	private Keyboard mNumberKeyboard;   // 数字键盘
 	private EditText money;// 金额
 	private EditText remarks;//备注
 	private TextView selectCategory;
@@ -40,13 +39,15 @@ public class MulKeyBoardDialog extends BaseDialog {
 	private ImageView back;
 	private long timeStamp;//时间戳
 
-	private final int DATE_SELECT = -1;
-	private final int ADD = 43;
-	private final int SUB = 45;
-	private final int SUBMIT = -4;
-	private final int BACKSPACE = -5;
+	private static final int DATE_SELECT = -1;
+	private static final int SUBMIT = -4;
+	private static final int BACKSPACE = -5;
+	private static final int ADD = -10;//+
+	private static final int SUB = -11;//-
+	private static final int MULTI = -12;//*
+	private static final int DIVISION = -13;//÷
+	private static final int DECIMAL = -9;//.
 
-	private EditText et;
 
 	private int icon = 0;
 	private String label = "";
@@ -82,8 +83,10 @@ public class MulKeyBoardDialog extends BaseDialog {
 		setCanceledOnTouchOutside(true);
 		setCancelable(true);
 
-		mNumberKeyboard = new Keyboard(mContext, R.xml.custom_keyboard);
-		mNumberView = findViewById(R.id.custom_keyboard);
+		// 数字键盘
+		Keyboard mNumberKeyboard = new Keyboard(mContext, R.xml.custom_keyboard_v1);
+		//数字键盘View
+		KeyboardView mNumberView = findViewById(R.id.custom_keyboard);
 		money = findViewById(R.id.money);
 		remarks = findViewById(R.id.remarks);
 		selectCategory = findViewById(R.id.select_category);
@@ -92,7 +95,8 @@ public class MulKeyBoardDialog extends BaseDialog {
 		time = findViewById(R.id.time_text);
 		date = findViewById(R.id.date_text);
 		back = findViewById(R.id.back);
-		setEditable(money);
+		TextView symbol = findViewById(R.id.symbol);
+		symbol.setText(Local.symbol);
 
 		mNumberView.setKeyboard(mNumberKeyboard);
 		mNumberView.setEnabled(true);
@@ -123,10 +127,6 @@ public class MulKeyBoardDialog extends BaseDialog {
 	}
 
 
-	public void setEditable(EditText editable) {
-		this.et = editable;
-	}
-
 	@Override
 	public void show() {
 		selectType.setImageResource(icon);
@@ -134,7 +134,7 @@ public class MulKeyBoardDialog extends BaseDialog {
 		super.show();
 	}
 
-	private int start;
+	private int nowCursor;
 	private Editable editable;
 	/**
 	 * 键盘监听
@@ -164,24 +164,58 @@ public class MulKeyBoardDialog extends BaseDialog {
 		@Override
 		public void onKey(int i, int[] keyCodes) {
 
-			editable = et.getText();
-			start = et.getSelectionStart();
-			//删除键操作
-			if (i == BACKSPACE) {
-				// 回退键,删除字符
-				if (editable != null && editable.length() > 0) {
-					if (start > 0) {
-						editable.delete(start - 1, start);
-					}
-				}
-			} else if (i == SUBMIT) {
-				Toast.makeText(mContext, "提交", Toast.LENGTH_SHORT).show();
+			editable = money.getText();
+			nowCursor = money.getSelectionStart();
 
-			} else if (i == DATE_SELECT) {
-				selectDate();
-			} else {
-				//都不是自定义的值就插入
-				editable.insert(start, Character.toString((char) i));
+			switch (i) {
+				case BACKSPACE:
+					if (editable != null && editable.length() > 0) {
+						if (nowCursor > 0) {
+							editable.delete(nowCursor - 1, nowCursor);
+						}
+					}
+					break;
+				case SUBMIT:
+					Toast.makeText(mContext, "提交", Toast.LENGTH_SHORT).show();
+					break;
+				case DATE_SELECT:
+					selectDate();
+					break;
+				case ADD:
+					editable.insert(nowCursor, "+");
+					break;
+				case SUB:
+					editable.insert(nowCursor, "-");
+					break;
+				case MULTI:
+					editable.insert(nowCursor, "×");
+					break;
+				case DIVISION:
+					editable.insert(nowCursor, "÷");
+					break;
+				case DECIMAL:
+					if (editable.length() == 0) {
+						editable.insert(nowCursor, "0.");
+						return;
+					}
+					if (editable.toString().contains(".")) {
+						return;
+					}
+					editable.insert(nowCursor, ".");
+					break;
+				default:
+					//只能输入不操作两位的小数
+					if (editable.toString().contains(".")) {
+						String[] arr = editable.toString().split("\\.");
+						if (arr.length == 2) {
+							if (arr[1].length() >= 2) {
+								return;
+							}
+						}
+					}
+					//都不是自定义的值就插入
+					editable.insert(nowCursor, Character.toString((char) i));
+					break;
 			}
 
 

@@ -1,7 +1,10 @@
 <Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
-    android:keyWidth="20%p"
+    android:keyWidth="19%p"
     android:keyHeight="7%p">
     <Row>
+        <Key
+            android:codes="-10"
+            android:keyLabel="+" />
         <Key
             android:codes="49"
             android:keyLabel="1" />
@@ -21,6 +24,9 @@
     </Row>
     <Row>
         <Key
+            android:codes="-11"
+            android:keyLabel="-" />
+        <Key
             android:codes="52"
             android:keyLabel="4" />
         <Key
@@ -36,6 +42,9 @@
     </Row>
     <Row>
         <Key
+            android:codes="-12"
+            android:keyLabel="×" />
+        <Key
             android:codes="55"
             android:keyLabel="7" />
         <Key
@@ -48,7 +57,10 @@
     </Row>
     <Row>
         <Key
-            android:codes="46"
+            android:codes="-13"
+            android:keyLabel="÷" />
+        <Key
+            android:codes="-9"
             android:keyLabel="." />
         <Key
             android:codes="48"
