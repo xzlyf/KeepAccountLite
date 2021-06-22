@@ -2,13 +2,9 @@ package com.xz.kal.activity.home;
 
 import android.content.Intent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.RotateAnimation;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.xz.kal.R;
@@ -62,8 +58,7 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 		mPresenter.getBill();
 		//获取今日日期
 		mPresenter.getToday();
-		//获取今日账单金额
-		mPresenter.calcBill();
+
 	}
 
 	private void initView() {
@@ -78,9 +73,19 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 		switch (v.getId()) {
 			case R.id.tv_add:
 				v.animate().rotationBy(360f).setDuration(500).start();
-				startActivity(new Intent(mContext, AddActivity.class));
+				startActivityForResult(new Intent(mContext, AddActivity.class), Local.REQ_ADD);
 				overridePendingTransition(R.anim.push_in_addactivity, R.anim.no_anim);
 				break;
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == Local.REQ_ADD && resultCode == RESULT_OK) {
+			//刷新今日账单
+			mPresenter.getBill();
+			// TODO: 2021/6/22 这里刷新有问题
 		}
 	}
 
@@ -97,10 +102,12 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 
 	@Override
 	public void refresh(List<Bill> list) {
+		//刷新今日账单金额
+		mPresenter.calcBill();
 		if (list != null) {
-			billAdapter.superRefresh(list);
+			billAdapter.refreshAndClear(list);
 		} else {
-			billAdapter.superRefresh(new ArrayList<>());
+			billAdapter.refreshAndClear(new ArrayList<>());
 		}
 	}
 

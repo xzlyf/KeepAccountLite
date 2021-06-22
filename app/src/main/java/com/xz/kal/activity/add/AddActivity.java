@@ -29,6 +29,7 @@ import butterknife.OnClick;
 
 public class AddActivity extends BaseActivity implements IAddContract.IView {
 
+	public static final String EXTRA_NEW = "newBill";
 
 	@BindView(R.id.tab_layout)
 	SmartTabLayout tabLayout;
@@ -130,7 +131,7 @@ public class AddActivity extends BaseActivity implements IAddContract.IView {
 						multiDialog.setOnSubmitCallback(new MulKeyBoardDialog.OnSubmitCallback() {
 							@Override
 							public void onSubmit(Bill bill) {
-
+								mPresenter.saveBill(bill);
 							}
 						});
 
@@ -143,9 +144,15 @@ public class AddActivity extends BaseActivity implements IAddContract.IView {
 
 
 	@Override
+	public void insertSuccess(Bill bill) {
+		setResult(RESULT_OK);
+		finish();
+	}
+
+	@Override
 	public void refreshItem(Map<Integer, List<Category>> refresh) {
-		inAdapter.superRefresh(refresh.get(0));
-		outAdapter.superRefresh(refresh.get(1));
+		inAdapter.refreshAndClear(refresh.get(0));
+		outAdapter.refreshAndClear(refresh.get(1));
 	}
 
 	@Override

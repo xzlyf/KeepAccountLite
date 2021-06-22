@@ -52,7 +52,8 @@ class Presenter implements IAddContract.IPresenter {
 				.subscribe(new BlockingBaseObserver<Bill>() {
 					@Override
 					public void onNext(@NonNull Bill bill) {
-
+						//插入成功
+						mView.insertSuccess(bill);
 					}
 
 					@Override

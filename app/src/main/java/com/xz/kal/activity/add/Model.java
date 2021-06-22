@@ -4,6 +4,7 @@ import com.xz.kal.base.BaseApplication;
 import com.xz.kal.constant.Local;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
+import com.xz.kal.sql.DBHelper;
 import com.xz.kal.sql.DBManager;
 
 import java.util.ArrayList;
@@ -52,6 +53,8 @@ class Model implements IAddContract.IModel {
 			public void subscribe(@NonNull ObservableEmitter<Bill> emitter) throws Throwable {
 				DBManager db = DBManager.getInstance(BaseApplication.getContext());
 				db.insertBill(bill);
+				//加上生成的主键id
+				bill.setId(db.queryLastNewRowId(DBHelper.TABLE_COMMON));
 				emitter.onNext(bill);
 			}
 		});

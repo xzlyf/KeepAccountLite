@@ -28,6 +28,8 @@ public interface IAddContract {
 	}
 
 	interface IView extends IBaseView {
+		void insertSuccess(Bill bill);
+
 		void refreshItem(Map<Integer, List<Category>> refresh);
 	}
 }

@@ -50,7 +50,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
 	 *
 	 * @param list
 	 */
-	public void superRefresh(List<T> list) {
+	public void refreshAndClear(List<T> list) {
 		mList.clear();
 		mList.addAll(list);
 		notifyDataSetChanged();

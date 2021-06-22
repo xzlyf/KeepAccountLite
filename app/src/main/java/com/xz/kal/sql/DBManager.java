@@ -4,8 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.SystemClock;
-import android.util.Log;
 
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
@@ -82,6 +80,33 @@ public class DBManager {
 		}
 	}
 
+	/**
+	 * 查询这个表最近插入数据的id   可用于刚插入数据返回主键id
+	 *
+	 * @param table 表明
+	 * @return
+	 */
+	public int queryLastNewRowId(String table) {
+		SQLiteDatabase db = dbHelper.openDB();
+		String sql = "select last_insert_rowid() from " + table;
+		Cursor cursor = null;
+		int a = -1;
+		try {
+			cursor = db.rawQuery(sql, null);
+			if (cursor.moveToFirst()) {
+				a = cursor.getInt(0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+			dbHelper.closeDB();
+		}
+		return a;
+	}
+
 
 	/*
 	============================账目操作=============================
@@ -138,6 +163,40 @@ public class DBManager {
 	}
 
 	/**
+	 * 根据账单id查询账单数据
+	 *
+	 * @param id
+	 * @return
+	 */
+	public Bill queryBill(int id) {
+		SQLiteDatabase db = dbHelper.openDB();
+		String sql = "select * from " + TABLE_COMMON + " where " + FIELD_COMMON_ID + " = " + id;
+		Cursor cursor = null;
+		Bill bill = null;
+		try {
+			cursor = db.rawQuery(sql, null);
+			if (cursor.moveToNext()) {
+				bill = new Bill();
+				bill.setId(cursor.getInt(0));
+				bill.setCategoryId(cursor.getInt(1));
+				bill.setInout(cursor.getString(2));
+				bill.setMoney(cursor.getDouble(3));
+				bill.setRemark(cursor.getString(4));
+				bill.setUpdateTime(new Date(cursor.getLong(5)));
+				bill.setCreateTime(new Date(cursor.getLong(6)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+			dbHelper.closeDB();
+		}
+		return bill;
+	}
+
+	/**
 	 * 查询记账
 	 */
 	public List<Bill> queryBill() {
@@ -189,7 +248,10 @@ public class DBManager {
 				.append(" between ")
 				.append(start)
 				.append(" and ")
-				.append(end);
+				.append(end)
+				.append(" order by ")
+				.append(FIELD_COMMON_CREATE)
+				.append(" desc ");//desc倒叙 asc顺序
 		Cursor cursor = null;
 		List<Bill> list = new ArrayList<>();
 		try {

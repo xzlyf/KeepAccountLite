@@ -324,10 +324,9 @@ public class MulKeyBoardDialog extends BaseDialog {
 		bill.setMoney(m);
 
 		if (mCallback != null) {
+			MulKeyBoardDialog.this.dismiss();
 			mCallback.onSubmit(bill);
 		}
-
-
 	}
 
 	public void setOnSubmitCallback(OnSubmitCallback callback) {

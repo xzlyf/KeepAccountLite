@@ -1,5 +1,6 @@
 package com.xz.kal.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Date;
  * @email czr2001@outlook.com
  * @date 2021/6/16
  */
-public class Bill {
+public class Bill implements Serializable {
 	private int id;
 	private int categoryId;
 	private String inout;
