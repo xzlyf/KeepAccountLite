@@ -1,7 +1,7 @@
 package com.xz.kal.activity.home;
 
 
-import com.xz.kal.activity.IViewMain;
+import com.xz.kal.base.IBaseView;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
 import com.xz.kal.entity.DayBill;
@@ -50,7 +50,7 @@ public interface IHomeContract {
 		void calcBill(Date start, Date end);
 	}
 
-	interface IView extends IViewMain {
+	interface IView extends IBaseView {
 
 		void today(Calendar calendar);
 

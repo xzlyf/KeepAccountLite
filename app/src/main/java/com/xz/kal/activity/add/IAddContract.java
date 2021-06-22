@@ -1,6 +1,6 @@
 package com.xz.kal.activity.add;
 
-import com.xz.kal.activity.IViewMain;
+import com.xz.kal.base.IBaseView;
 import com.xz.kal.entity.Category;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public interface IAddContract {
 		void getItemData();
 	}
 
-	interface IView extends IViewMain {
+	interface IView extends IBaseView {
 		void refreshItem(Map<Integer, List<Category>> refresh);
 	}
 }
