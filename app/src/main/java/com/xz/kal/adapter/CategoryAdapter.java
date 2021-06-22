@@ -14,6 +14,7 @@ import com.xz.kal.base.BaseRecyclerViewHolder;
 import com.xz.kal.entity.Category;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @author czr
@@ -47,6 +48,14 @@ public class CategoryAdapter extends BaseRecyclerAdapter<Category> {
 
 		ViewHolder(@NonNull View itemView) {
 			super(itemView);
+
+		}
+
+		@OnClick(R.id.id_type)
+		public void itemClick(){
+			if (mOnItemClickListener != null) {
+				mOnItemClickListener.onClick(mList.get(getLayoutPosition()));
+			}
 		}
 	}
 }

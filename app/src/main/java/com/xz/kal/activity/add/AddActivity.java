@@ -14,6 +14,8 @@ import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.xz.kal.R;
 import com.xz.kal.adapter.CategoryAdapter;
 import com.xz.kal.base.BaseActivity;
+import com.xz.kal.base.BaseRecyclerAdapter;
+import com.xz.kal.dialog.MulKeyBoardDialog;
 import com.xz.kal.entity.Category;
 import com.xz.kal.utils.SpacesItemDecorationVH;
 
@@ -22,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class AddActivity extends BaseActivity implements IAddContract.IView {
 
@@ -37,6 +40,7 @@ public class AddActivity extends BaseActivity implements IAddContract.IView {
 	CategoryAdapter outAdapter;
 	private String[] pageTitle = {"支出", "收入"};
 	private Presenter mPresenter;
+	private MulKeyBoardDialog multiDialog;
 
 	@Override
 	public boolean homeAsUpEnabled() {
@@ -51,6 +55,7 @@ public class AddActivity extends BaseActivity implements IAddContract.IView {
 	@Override
 	public void initData() {
 		mPresenter = new Presenter(this);
+		changeNavigatorBar();
 		initView();
 		mPresenter.getItemData();
 	}
@@ -98,12 +103,57 @@ public class AddActivity extends BaseActivity implements IAddContract.IView {
 		outRecycler.addItemDecoration(new SpacesItemDecorationVH(10));
 		outRecycler.setAdapter(outAdapter);
 
+		inAdapter.setOnItemClickListener(onItemClickListener);
+		outAdapter.setOnItemClickListener(onItemClickListener);
+
 
 	}
+
+	@OnClick(R.id.ic_back)
+	public void onViewClick(View v) {
+		switch (v.getId()) {
+			case R.id.ic_back:
+				finish();
+				break;
+		}
+	}
+
+	private BaseRecyclerAdapter.OnItemClickListener<Category> onItemClickListener = new BaseRecyclerAdapter.OnItemClickListener<Category>() {
+		@Override
+		public void onClick(Category category) {
+
+			if (multiDialog != null) {
+				multiDialog.dismiss();
+			}
+			multiDialog = new MulKeyBoardDialog(mContext);
+			multiDialog.create();
+			multiDialog.setIcon(category.getIcon());
+			multiDialog.setLabel(category.getLabel());
+			multiDialog.show();
+
+		}
+	};
+
 
 	@Override
 	public void refreshItem(Map<Integer, List<Category>> refresh) {
 		inAdapter.superRefresh(refresh.get(0));
 		outAdapter.superRefresh(refresh.get(1));
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (multiDialog != null && multiDialog.isShowing()) {
+			multiDialog.dismiss();
+			multiDialog = null;
+		} else {
+			super.onBackPressed();
+		}
+	}
+
+	@Override
+	public void finish() {
+		super.finish();
+		overridePendingTransition(R.anim.no_anim, R.anim.push_out_addactivity);
 	}
 }

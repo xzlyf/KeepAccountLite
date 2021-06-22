@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -63,29 +66,20 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 		mPresenter.calcBill();
 	}
 
-	/**
-	 * 底部导航栏颜色
-	 */
-	private void changeNavigatorBar() {
-		int vis = getWindow().getDecorView().getSystemUiVisibility();
-		vis |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-		getWindow().getDecorView().setSystemUiVisibility(vis);
-		Window window = getWindow();
-		window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-		window.setNavigationBarColor(getResources().getColor(R.color.white));
-	}
-
 	private void initView() {
 		recyclerMoney.setLayoutManager(new LinearLayoutManager(mContext));
 		billAdapter = new BillAdapter(mContext);
 		recyclerMoney.setAdapter(billAdapter);
 	}
 
+
 	@OnClick(R.id.tv_add)
 	public void onViewClick(View v) {
 		switch (v.getId()) {
 			case R.id.tv_add:
+				v.animate().rotationBy(360f).setDuration(500).start();
 				startActivity(new Intent(mContext, AddActivity.class));
+				overridePendingTransition(R.anim.push_in_addactivity, R.anim.no_anim);
 				break;
 		}
 	}

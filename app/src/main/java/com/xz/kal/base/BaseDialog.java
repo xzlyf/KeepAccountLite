@@ -36,13 +36,14 @@ public abstract class BaseDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResource());
         Window window = getWindow();
-        assert window != null;
-        window.setBackgroundDrawableResource(R.color.transparent);
-        WindowManager.LayoutParams lp = window.getAttributes();
-        DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
-        lp.width = (int) (dm.widthPixels * 0.8);
-        lp.dimAmount = 0.2f;
-        window.setAttributes(lp);
+        if (window!=null){
+            window.setBackgroundDrawableResource(R.color.transparent);
+            WindowManager.LayoutParams lp = window.getAttributes();
+            DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
+            lp.width = (int) (dm.widthPixels * 0.8);
+            lp.dimAmount = 0.2f;
+            window.setAttributes(lp);
+        }
 
         initData();
     }

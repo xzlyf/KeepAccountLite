@@ -8,22 +8,38 @@
     android:orientation="vertical"
     tools:context=".activity.add.AddActivity">
 
-    <com.ogaclejapan.smarttablayout.SmartTabLayout
-        android:id="@+id/tab_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_gravity="center"
-        app:stl_clickable="true"
-        app:stl_defaultTabBackground="@drawable/select_null"
-        app:stl_defaultTabTextColor="@color/primary_text"
-        app:stl_defaultTabTextHorizontalPadding="16dp"
-        app:stl_defaultTabTextSize="16sp"
-        app:stl_dividerColor="@color/transparent"
-        app:stl_indicatorColor="@color/colorAccent"
-        app:stl_indicatorCornerRadius="15dp"
-        app:stl_indicatorGravity="center"
-        app:stl_indicatorThickness="30dp"
-        app:stl_underlineColor="@color/transparent" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="?android:actionBarSize">
+
+        <ImageView
+            android:id="@+id/ic_back"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="start|center"
+            android:layout_marginStart="15dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="5dp"
+            android:src="@drawable/ic_back" />
+
+        <com.ogaclejapan.smarttablayout.SmartTabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            app:stl_clickable="true"
+            app:stl_defaultTabBackground="@drawable/select_null"
+            app:stl_defaultTabTextColor="@color/primary_text"
+            app:stl_defaultTabTextHorizontalPadding="16dp"
+            app:stl_defaultTabTextSize="16sp"
+            app:stl_dividerColor="@color/transparent"
+            app:stl_indicatorColor="@color/colorAccent"
+            app:stl_indicatorCornerRadius="15dp"
+            app:stl_indicatorGravity="center"
+            app:stl_indicatorThickness="30dp"
+            app:stl_underlineColor="@color/transparent" />
+    </FrameLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/item_viewPage"
