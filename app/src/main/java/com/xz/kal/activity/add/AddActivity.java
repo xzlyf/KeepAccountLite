@@ -1,4 +1,4 @@
-package com.xz.kal.activity;
+package com.xz.kal.activity.add;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,6 @@ import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.xz.kal.R;
 import com.xz.kal.adapter.CategoryAdapter;
 import com.xz.kal.base.BaseActivity;
-import com.xz.kal.constant.Local;
 import com.xz.kal.entity.Category;
 import com.xz.kal.utils.SpacesItemDecorationVH;
 
@@ -24,7 +23,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 
-public class AddActivity extends BaseActivity {
+public class AddActivity extends BaseActivity implements IAddContract.IView {
 
 
 	@BindView(R.id.tab_layout)
@@ -34,6 +33,10 @@ public class AddActivity extends BaseActivity {
 
 	RecyclerView inRecycler;
 	RecyclerView outRecycler;
+	CategoryAdapter inAdapter;
+	CategoryAdapter outAdapter;
+	private String[] pageTitle = {"支出", "收入"};
+	private Presenter mPresenter;
 
 	@Override
 	public boolean homeAsUpEnabled() {
@@ -47,13 +50,12 @@ public class AddActivity extends BaseActivity {
 
 	@Override
 	public void initData() {
+		mPresenter = new Presenter(this);
 		initView();
+		mPresenter.getItemData();
 	}
 
 	private void initView() {
-		List<String> pageTitle = new ArrayList<>();
-		pageTitle.add("支出");
-		pageTitle.add("收入");
 		View outView = View.inflate(this, R.layout.view_recycler, null);
 		outRecycler = outView.findViewById(R.id.recycler_type);
 		View inView = View.inflate(this, R.layout.view_recycler, null);
@@ -65,7 +67,7 @@ public class AddActivity extends BaseActivity {
 			@Nullable
 			@Override
 			public CharSequence getPageTitle(int position) {
-				return pageTitle.get(position);
+				return pageTitle[position];
 			}
 
 			@Override
@@ -87,32 +89,21 @@ public class AddActivity extends BaseActivity {
 		});
 		tabLayout.setViewPager(viewPager);
 
-		CategoryAdapter outAdapter = new CategoryAdapter(this);
-		CategoryAdapter inAdapter = new CategoryAdapter(this);
-
+		inAdapter = new CategoryAdapter(this);
 		inRecycler.setLayoutManager(new GridLayoutManager(this, 4));
 		inRecycler.addItemDecoration(new SpacesItemDecorationVH(10));
 		inRecycler.setAdapter(inAdapter);
-
+		outAdapter = new CategoryAdapter(this);
 		outRecycler.setLayoutManager(new GridLayoutManager(this, 4));
 		outRecycler.addItemDecoration(new SpacesItemDecorationVH(10));
 		outRecycler.setAdapter(outAdapter);
 
 
-		List<Category> inList = new ArrayList<>();
-		List<Category> outList = new ArrayList<>();
-
-		for (Map.Entry<Integer, Category> entry : Local.categories.entrySet()) {
-			if (entry.getValue().getInout().contentEquals(Local.SYMBOL_IN)) {
-				inList.add(entry.getValue());
-			} else {
-				outList.add(entry.getValue());
-			}
-		}
-
-		inAdapter.superRefresh(inList);
-		outAdapter.superRefresh(outList);
-
 	}
 
+	@Override
+	public void refreshItem(Map<Integer, List<Category>> refresh) {
+		inAdapter.superRefresh(refresh.get(0));
+		outAdapter.superRefresh(refresh.get(1));
+	}
 }

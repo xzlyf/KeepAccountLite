@@ -1,6 +1,7 @@
 package com.xz.kal.activity.home;
 
 
+import com.xz.kal.activity.IViewMain;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
 import com.xz.kal.entity.DayBill;
@@ -49,12 +50,7 @@ public interface IHomeContract {
 		void calcBill(Date start, Date end);
 	}
 
-	interface IView {
-		void showLoading(String message);
-
-		void disLoading();
-
-		void sToast(String message);
+	interface IView extends IViewMain {
 
 		void today(Calendar calendar);
 

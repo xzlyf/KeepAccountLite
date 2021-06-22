@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.AddActivity"
+            android:name=".activity.add.AddActivity"
             android:screenOrientation="portrait"
             android:theme="@style/HomeTheme" />
         <activity android:name=".activity.SettingActivity" />

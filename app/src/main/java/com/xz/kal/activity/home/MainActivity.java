@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.xz.kal.R;
-import com.xz.kal.activity.AddActivity;
+import com.xz.kal.activity.add.AddActivity;
 import com.xz.kal.adapter.BillAdapter;
 import com.xz.kal.base.BaseActivity;
 import com.xz.kal.constant.Local;
