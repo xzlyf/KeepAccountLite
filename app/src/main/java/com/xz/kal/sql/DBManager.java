@@ -42,7 +42,6 @@ public class DBManager {
 
 	private DBManager(Context context) {
 		dbHelper = new DBHelper(context);
-
 	}
 
 	public static DBManager getInstance(Context context) {

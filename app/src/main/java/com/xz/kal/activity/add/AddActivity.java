@@ -16,6 +16,7 @@ import com.xz.kal.adapter.CategoryAdapter;
 import com.xz.kal.base.BaseActivity;
 import com.xz.kal.base.BaseRecyclerAdapter;
 import com.xz.kal.dialog.MulKeyBoardDialog;
+import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
 import com.xz.kal.utils.SpacesItemDecorationVH;
 
@@ -118,21 +119,27 @@ public class AddActivity extends BaseActivity implements IAddContract.IView {
 		}
 	}
 
-	private BaseRecyclerAdapter.OnItemClickListener<Category> onItemClickListener = new BaseRecyclerAdapter.OnItemClickListener<Category>() {
-		@Override
-		public void onClick(Category category) {
+	private BaseRecyclerAdapter.OnItemClickListener<Category> onItemClickListener =
+			new BaseRecyclerAdapter.OnItemClickListener<Category>() {
+				@Override
+				public void onClick(Category category) {
 
-			if (multiDialog != null) {
-				multiDialog.dismiss();
-			}
-			multiDialog = new MulKeyBoardDialog(mContext);
-			multiDialog.create();
-			multiDialog.setIcon(category.getIcon());
-			multiDialog.setLabel(category.getLabel());
-			multiDialog.show();
+					if (multiDialog == null) {
+						multiDialog = new MulKeyBoardDialog(mContext);
+						multiDialog.create();
+						multiDialog.setOnSubmitCallback(new MulKeyBoardDialog.OnSubmitCallback() {
+							@Override
+							public void onSubmit(Bill bill) {
 
-		}
-	};
+							}
+						});
+
+					}
+					multiDialog.setCategory(category);
+					multiDialog.show();
+
+				}
+			};
 
 
 	@Override
@@ -145,7 +152,6 @@ public class AddActivity extends BaseActivity implements IAddContract.IView {
 	public void onBackPressed() {
 		if (multiDialog != null && multiDialog.isShowing()) {
 			multiDialog.dismiss();
-			multiDialog = null;
 		} else {
 			super.onBackPressed();
 		}

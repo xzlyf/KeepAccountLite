@@ -1,7 +1,10 @@
 package com.xz.kal.activity.add;
 
+import com.xz.kal.base.BaseApplication;
 import com.xz.kal.constant.Local;
+import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
+import com.xz.kal.sql.DBManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,4 +44,17 @@ class Model implements IAddContract.IModel {
 			}
 		});
 	}
+
+	@Override
+	public Observable<Bill> saveBill(Bill bill) {
+		return Observable.create(new ObservableOnSubscribe<Bill>() {
+			@Override
+			public void subscribe(@NonNull ObservableEmitter<Bill> emitter) throws Throwable {
+				DBManager db = DBManager.getInstance(BaseApplication.getContext());
+				db.insertBill(bill);
+				emitter.onNext(bill);
+			}
+		});
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.xz.kal.activity.add;
 
+import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
 
 import java.util.List;
@@ -39,6 +40,24 @@ class Presenter implements IAddContract.IPresenter {
 					@Override
 					public void onError(@NonNull Throwable e) {
 						mView.sToast("分类标签读取失败");
+					}
+				});
+	}
+
+	@Override
+	public void saveBill(Bill bill) {
+		mModel.saveBill(bill)
+				.subscribeOn(Schedulers.newThread())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new BlockingBaseObserver<Bill>() {
+					@Override
+					public void onNext(@NonNull Bill bill) {
+
+					}
+
+					@Override
+					public void onError(@NonNull Throwable e) {
+						mView.sToast("账单存储失败，请重试！");
 					}
 				});
 	}

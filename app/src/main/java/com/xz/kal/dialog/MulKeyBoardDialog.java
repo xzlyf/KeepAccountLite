@@ -17,14 +17,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.xz.kal.R;
 import com.xz.kal.base.BaseDialog;
 import com.xz.kal.constant.Local;
+import com.xz.kal.entity.Bill;
+import com.xz.kal.entity.Category;
 import com.xz.kal.utils.DatePickerUtil;
 import com.xz.kal.utils.TimeUtil;
 
+import java.util.Date;
 import java.util.regex.Pattern;
 
 public class MulKeyBoardDialog extends BaseDialog {
@@ -49,8 +52,8 @@ public class MulKeyBoardDialog extends BaseDialog {
 	private static final int DECIMAL = -9;//.
 
 
-	private int icon = 0;
-	private String label = "";
+	private Category mCategory;
+	private OnSubmitCallback mCallback;
 
 	public MulKeyBoardDialog(Context context) {
 		this(context, R.style.BottomDialog);
@@ -117,20 +120,16 @@ public class MulKeyBoardDialog extends BaseDialog {
 		});
 	}
 
-	public void setIcon(int type) {
-		this.icon = type;
-
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
+	public void setCategory(Category category) {
+		this.mCategory = category;
+		money.setText("");
 	}
 
 
 	@Override
 	public void show() {
-		selectType.setImageResource(icon);
-		selectCategory.setText(label);
+		selectType.setImageResource(mCategory.getIcon());
+		selectCategory.setText(mCategory.getLabel());
 		super.show();
 	}
 
@@ -176,7 +175,7 @@ public class MulKeyBoardDialog extends BaseDialog {
 					}
 					break;
 				case SUBMIT:
-					Toast.makeText(mContext, "提交", Toast.LENGTH_SHORT).show();
+					saveBill();
 					break;
 				case DATE_SELECT:
 					selectDate();
@@ -247,7 +246,6 @@ public class MulKeyBoardDialog extends BaseDialog {
 		}
 	};
 
-
 	/**
 	 * 备注框监听
 	 */
@@ -300,6 +298,44 @@ public class MulKeyBoardDialog extends BaseDialog {
 				});
 			}
 		});
+	}
+
+	private void saveBill() {
+		if (money.getText().length() <= 0) {
+			Snackbar.make(money, "请输入金额", Snackbar.LENGTH_SHORT).show();
+			return;
+		}
+
+		double m;
+		try {
+			m = Double.parseDouble(money.getText().toString());
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			Snackbar.make(money, "数值异常", Snackbar.LENGTH_SHORT).show();
+			return;
+		}
+
+		Bill bill = new Bill();
+		bill.setCreateTime(new Date(System.currentTimeMillis()));
+		bill.setUpdateTime(bill.getCreateTime());
+		bill.setRemark(remarks.getText().toString().trim());
+		bill.setInout(mCategory.getInout());
+		bill.setCategoryId(mCategory.getId());
+		bill.setMoney(m);
+
+		if (mCallback != null) {
+			mCallback.onSubmit(bill);
+		}
+
+
+	}
+
+	public void setOnSubmitCallback(OnSubmitCallback callback) {
+		this.mCallback = callback;
+	}
+
+	public interface OnSubmitCallback {
+		void onSubmit(Bill bill);
 	}
 
 

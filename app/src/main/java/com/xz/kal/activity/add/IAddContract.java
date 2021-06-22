@@ -1,6 +1,7 @@
 package com.xz.kal.activity.add;
 
 import com.xz.kal.base.IBaseView;
+import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
 
 import java.util.List;
@@ -16,10 +17,14 @@ import io.reactivex.rxjava3.core.Observable;
 public interface IAddContract {
 	interface IModel {
 		Observable<Map<Integer, List<Category>>> getItemData();
+
+		Observable<Bill> saveBill(Bill bill);
 	}
 
 	interface IPresenter {
 		void getItemData();
+
+		void saveBill(Bill bill);
 	}
 
 	interface IView extends IBaseView {
