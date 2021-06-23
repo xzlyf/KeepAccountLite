@@ -11,12 +11,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.xz.kal.R;
 import com.xz.kal.activity.add.AddActivity;
-import com.xz.kal.adapter.BillAdapter;
+import com.xz.kal.adapter.BillAdapterV2;
 import com.xz.kal.base.BaseActivity;
 import com.xz.kal.constant.Local;
 import com.xz.kal.custom.EmptyTipsRecyclerView;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.DayBill;
+import com.xz.kal.utils.SpacesItemDecorationVertical;
 import com.xz.kal.utils.TimeUtil;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 	SwipeRefreshLayout refreshLayout;
 
 	private Presenter mPresenter;
-	private BillAdapter billAdapter;
+	private BillAdapterV2 billAdapter;
 
 	@Override
 	public boolean homeAsUpEnabled() {
@@ -58,16 +59,15 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 		mPresenter = new Presenter(this);
 		changeNavigatorBar();
 		initView();
-		//refreshLayout.setRefreshing(false);//不知为何刷新不了
-		//获取今日的账单
 		mPresenter.getBill();
-		//获取今日日期
 		mPresenter.getToday();
+
 	}
 
 	private void initView() {
 		recyclerMoney.setLayoutManager(new LinearLayoutManager(mContext));
-		billAdapter = new BillAdapter(mContext);
+		recyclerMoney.addItemDecoration(new SpacesItemDecorationVertical(15));
+		billAdapter = new BillAdapterV2(mContext);
 		recyclerMoney.setAdapter(billAdapter);
 		refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
@@ -94,7 +94,6 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == Local.REQ_ADD && resultCode == RESULT_OK) {
-			//刷新今日账单
 			mPresenter.getBill();
 		}
 	}
@@ -106,8 +105,8 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 
 	@Override
 	public void todayBill(DayBill dayBill) {
-		tvDayIn.setText(String.format("%s+%s", Local.symbol, dayBill.getDayIn()));
-		tvDayOut.setText(String.format("%s-%s", Local.symbol, dayBill.getDayOut()));
+		tvDayIn.setText(String.format("+%s%s", Local.symbol, dayBill.getDayIn()));
+		tvDayOut.setText(String.format("-%s%s", Local.symbol, dayBill.getDayOut()));
 	}
 
 	@Override
