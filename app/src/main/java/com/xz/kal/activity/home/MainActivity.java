@@ -6,7 +6,9 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.xz.kal.R;
 import com.xz.kal.activity.add.AddActivity;
 import com.xz.kal.adapter.BillAdapter;
@@ -35,6 +37,8 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 	TextView tvDayOut;
 	@BindView(R.id.tv_day_in)
 	TextView tvDayIn;
+	@BindView(R.id.refresh_layout)
+	SwipeRefreshLayout refreshLayout;
 
 	private Presenter mPresenter;
 	private BillAdapter billAdapter;
@@ -54,17 +58,24 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 		mPresenter = new Presenter(this);
 		changeNavigatorBar();
 		initView();
+		//refreshLayout.setRefreshing(false);//不知为何刷新不了
 		//获取今日的账单
 		mPresenter.getBill();
 		//获取今日日期
 		mPresenter.getToday();
-
 	}
 
 	private void initView() {
 		recyclerMoney.setLayoutManager(new LinearLayoutManager(mContext));
 		billAdapter = new BillAdapter(mContext);
 		recyclerMoney.setAdapter(billAdapter);
+		refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				mPresenter.getBill();
+				mPresenter.getToday();
+			}
+		});
 	}
 
 
@@ -85,7 +96,6 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 		if (requestCode == Local.REQ_ADD && resultCode == RESULT_OK) {
 			//刷新今日账单
 			mPresenter.getBill();
-			// TODO: 2021/6/22 这里刷新有问题
 		}
 	}
 
@@ -102,6 +112,10 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 
 	@Override
 	public void refresh(List<Bill> list) {
+		if (refreshLayout.isRefreshing()) {
+			refreshLayout.setRefreshing(false);
+			Snackbar.make(refreshLayout, "刷新成功", Snackbar.LENGTH_SHORT).show();
+		}
 		//刷新今日账单金额
 		mPresenter.calcBill();
 		if (list != null) {

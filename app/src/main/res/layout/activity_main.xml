@@ -122,14 +122,20 @@
                     app:layout_constraintRight_toRightOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.xz.kal.custom.EmptyTipsRecyclerView
-                android:id="@+id/recycler_money"
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/refresh_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:overScrollMode="never"
-                app:empty_image="@drawable/ic_empty_tips" />
+                android:layout_marginEnd="10dp">
+
+                <com.xz.kal.custom.EmptyTipsRecyclerView
+                    android:id="@+id/recycler_money"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never"
+                    app:empty_image="@drawable/ic_empty_tips" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

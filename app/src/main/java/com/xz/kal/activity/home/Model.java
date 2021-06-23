@@ -1,6 +1,8 @@
 package com.xz.kal.activity.home;
 
 
+import android.os.SystemClock;
+
 import com.orhanobut.logger.Logger;
 import com.xz.kal.base.BaseApplication;
 import com.xz.kal.entity.Bill;
