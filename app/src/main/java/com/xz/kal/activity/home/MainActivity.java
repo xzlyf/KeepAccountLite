@@ -15,6 +15,7 @@ import com.xz.kal.adapter.BillAdapterV2;
 import com.xz.kal.base.BaseActivity;
 import com.xz.kal.constant.Local;
 import com.xz.kal.custom.EmptyTipsRecyclerView;
+import com.xz.kal.dialog.BagSelectDialog;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.DayBill;
 import com.xz.kal.utils.SpacesItemDecorationVertical;
@@ -36,8 +37,6 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 	TextView tvDay;
 	@BindView(R.id.tv_day_out)
 	TextView tvDayOut;
-	@BindView(R.id.tv_day_in)
-	TextView tvDayIn;
 	@BindView(R.id.refresh_layout)
 	SwipeRefreshLayout refreshLayout;
 
@@ -79,13 +78,18 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 	}
 
 
-	@OnClick(R.id.tv_add)
+	@OnClick({R.id.tv_add, R.id.tv_wallet})
 	public void onViewClick(View v) {
 		switch (v.getId()) {
 			case R.id.tv_add:
 				v.animate().rotationBy(360f).setDuration(500).start();
 				startActivityForResult(new Intent(mContext, AddActivity.class), Local.REQ_ADD);
 				overridePendingTransition(R.anim.push_in_addactivity, R.anim.no_anim);
+				break;
+			case R.id.tv_wallet:
+				BagSelectDialog dialog = new BagSelectDialog(mContext);
+				dialog.create();
+				dialog.show();
 				break;
 		}
 	}
@@ -105,8 +109,7 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 
 	@Override
 	public void todayBill(DayBill dayBill) {
-		tvDayIn.setText(String.format("+%s%s", Local.symbol, dayBill.getDayIn()));
-		tvDayOut.setText(String.format("-%s%s", Local.symbol, dayBill.getDayOut()));
+		tvDayOut.setText(String.format("%s%s", dayBill.getDayTotal(), Local.symbol));
 	}
 
 	@Override

@@ -13,6 +13,8 @@ import android.widget.EditText;
 
 import com.xz.kal.R;
 
+import butterknife.ButterKnife;
+
 public abstract class BaseDialog extends Dialog {
 	protected Context mContext;
 	private OnCancelListener cancelListener;
@@ -40,6 +42,8 @@ public abstract class BaseDialog extends Dialog {
 		super.onCreate(savedInstanceState);
 		setContentView(getLayoutResource());
 		Window window = getWindow();
+		ButterKnife.bind(this,BaseDialog.this);
+
 		if (window != null) {
 			window.setBackgroundDrawableResource(R.color.transparent);
 			WindowManager.LayoutParams lp = window.getAttributes();

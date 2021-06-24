@@ -11,6 +11,14 @@
     <color name="divider">#BDBDBD</color>
     <color name="dark">#EBEBEB</color>
 
+    <!--更具主色调生成通用颜色梯度-->
+    <color name="stair_1">#607D8B</color>
+    <color name="stair_2">#519AA4</color>
+    <color name="stair_3">#4CB8AB</color>
+    <color name="stair_4">#6ED39F</color>
+    <color name="stair_5">#ACE987</color>
+    <color name="stair_6">#F9F871</color>
+
     <color name="main_background">#F4F4F4</color>
     <color name="blue_1">#2196F3</color>
     <color name="blue_2">#196AAA</color>

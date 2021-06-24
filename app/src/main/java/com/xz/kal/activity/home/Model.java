@@ -53,7 +53,7 @@ public class Model implements IHomeContract.IModel {
 				BigDecimal inDec = new BigDecimal(dayBill.getDayIn());
 				BigDecimal outDec = new BigDecimal(dayBill.getDayOut());
 				//计算收支
-				dayBill.setTotal(inDec.subtract(outDec).doubleValue());
+				dayBill.setDayTotal(inDec.subtract(outDec).doubleValue());
 				emitter.onNext(dayBill);
 			}
 		});

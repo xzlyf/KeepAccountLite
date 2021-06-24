@@ -7,18 +7,18 @@ package com.xz.kal.entity;
  */
 public class DayBill {
 	//今日收支总额
-	private double total;
+	private double dayTotal;
 	//今日收入金额
 	private double dayIn;
 	//进入支出金额
 	private double dayOut;
 
-	public double getTotal() {
-		return total;
+	public double getDayTotal() {
+		return dayTotal;
 	}
 
-	public void setTotal(double total) {
-		this.total = total;
+	public void setDayTotal(double dayTotal) {
+		this.dayTotal = dayTotal;
 	}
 
 	public double getDayIn() {
@@ -37,12 +37,4 @@ public class DayBill {
 		this.dayOut = dayOut;
 	}
 
-	@Override
-	public String toString() {
-		return "DayBill{" +
-				"total=" + total +
-				", dayIn=" + dayIn +
-				", dayOut=" + dayOut +
-				'}';
-	}
 }
