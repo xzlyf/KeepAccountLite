@@ -36,4 +36,13 @@ public class DayBill {
 	public void setDayOut(double dayOut) {
 		this.dayOut = dayOut;
 	}
+
+	@Override
+	public String toString() {
+		return "DayBill{" +
+				"total=" + total +
+				", dayIn=" + dayIn +
+				", dayOut=" + dayOut +
+				'}';
+	}
 }

@@ -58,7 +58,6 @@ public class EmptyTipsRecyclerView extends RecyclerView {
 	@Override
 	public void onDraw(Canvas c) {
 		// TODO: 2021/6/21 解决图标不显示的问题
-		Log.d("TAG", "onDraw: 执行执行执行=============================================");
 		//如果子控件等于0，显示图像
 		if (getChildCount() == 0 && emptyIconBitmap != null) {
 			c.drawBitmap(emptyIconBitmap, (float) ((getMeasuredWidth() / 2) - (emptyIconBitmap.getWidth() / 2))

@@ -77,8 +77,6 @@ public class SlideRecyclerView extends RecyclerView {
 
 	@Override
 	public void onDraw(Canvas c) {
-		Log.d("TAG", "onDraw: 执行执行执行=============================================");
-
 		//如果子控件等于0，显示图像
 		if (getChildCount() == 0 && emptyIconBitmap != null) {
 			c.drawBitmap(emptyIconBitmap, (float) ((getMeasuredWidth() / 2) - (emptyIconBitmap.getWidth() / 2))

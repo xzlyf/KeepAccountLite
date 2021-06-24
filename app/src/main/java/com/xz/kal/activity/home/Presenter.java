@@ -1,10 +1,13 @@
 package com.xz.kal.activity.home;
 
+import com.orhanobut.logger.Logger;
 import com.xz.kal.constant.Local;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
 import com.xz.kal.entity.DayBill;
+import com.xz.kal.utils.CalendarUtil;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -49,7 +52,7 @@ public class Presenter implements IHomeContract.IPresenter {
 						@Override
 						public void onNext(@NonNull Map<Integer, Category> list) {
 							Local.categories = list;
-							getBill(new Date(), new Date());
+							getBill(CalendarUtil.getDayStart().getTime(), CalendarUtil.getDayEnd().getTime());
 						}
 
 						@Override
@@ -58,7 +61,7 @@ public class Presenter implements IHomeContract.IPresenter {
 						}
 					});
 		} else {
-			getBill(new Date(), new Date());
+			getBill(CalendarUtil.getDayStart().getTime(), CalendarUtil.getDayEnd().getTime());
 		}
 	}
 
@@ -86,8 +89,29 @@ public class Presenter implements IHomeContract.IPresenter {
 	}
 
 	@Override
-	public void calcBill() {
-		calcBill(new Date(), new Date());
+	public void calcTodayBill() {
+		calcBill(CalendarUtil.getDayStart().getTime(), CalendarUtil.getDayEnd().getTime());
+	}
+
+	@Override
+	public void calcMonthBill() {
+		model.calcBill(CalendarUtil.getMonthStart().getTime(), CalendarUtil.getMonthEnd().getTime())
+				.subscribeOn(Schedulers.newThread())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new BlockingBaseObserver<DayBill>() {
+					@Override
+					public void onNext(@NonNull DayBill dayBill) {
+						mView.todayBill(dayBill);
+					}
+
+					@Override
+					public void onError(@NonNull Throwable e) {
+						DayBill err = new DayBill();
+						err.setDayIn(0.0f);
+						err.setDayOut(0.0f);
+						mView.todayBill(err);
+					}
+				});
 	}
 
 	@Override

@@ -1,9 +1,6 @@
 package com.xz.kal.activity.home;
 
 
-import android.os.SystemClock;
-
-import com.orhanobut.logger.Logger;
 import com.xz.kal.base.BaseApplication;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
@@ -11,6 +8,7 @@ import com.xz.kal.entity.DayBill;
 import com.xz.kal.sql.DBManager;
 import com.xz.kal.sql.DefaultData;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,15 +34,6 @@ public class Model implements IHomeContract.IModel {
 
 	@Override
 	public Observable<List<Bill>> getBill(Date start, Date end) {
-		//查询时间为开始时间的00:00:00 结束时间的第二天的00:00:00
-		start.setHours(0);
-		start.setMinutes(0);
-		start.setSeconds(0);
-		end.setTime(end.getTime() + 86400000L);//获取第二天
-		end.setHours(0);
-		end.setMinutes(0);
-		end.setSeconds(0);
-
 		return Observable.create(new ObservableOnSubscribe<List<Bill>>() {
 			@Override
 			public void subscribe(@NonNull ObservableEmitter<List<Bill>> emitter) throws Throwable {
@@ -57,18 +46,14 @@ public class Model implements IHomeContract.IModel {
 
 	@Override
 	public Observable<DayBill> calcBill(Date start, Date end) {
-		//查询时间为开始时间的00:00:00 结束时间的第二天的00:00:00
-		start.setHours(0);
-		start.setMinutes(0);
-		start.setSeconds(0);
-		end.setTime(end.getTime() + 86400000L);//获取第二天
-		end.setHours(0);
-		end.setMinutes(0);
-		end.setSeconds(0);
 		return Observable.create(new ObservableOnSubscribe<DayBill>() {
 			@Override
 			public void subscribe(@NonNull ObservableEmitter<DayBill> emitter) throws Throwable {
 				DayBill dayBill = db.calcBill(start, end);
+				BigDecimal inDec = new BigDecimal(dayBill.getDayIn());
+				BigDecimal outDec = new BigDecimal(dayBill.getDayOut());
+				//计算收支
+				dayBill.setTotal(inDec.subtract(outDec).doubleValue());
 				emitter.onNext(dayBill);
 			}
 		});

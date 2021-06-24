@@ -44,7 +44,10 @@ public interface IHomeContract {
 		void getBill(Date start, Date end);
 
 		//获取今天的账单
-		void calcBill();
+		void calcTodayBill();
+
+		//获取本月账单
+		void calcMonthBill();
 
 		//计算指定日期的账单
 		void calcBill(Date start, Date end);

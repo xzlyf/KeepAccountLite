@@ -116,7 +116,7 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 			Snackbar.make(refreshLayout, "刷新成功", Snackbar.LENGTH_SHORT).show();
 		}
 		//刷新今日账单金额
-		mPresenter.calcBill();
+		mPresenter.calcTodayBill();
 		if (list != null) {
 			billAdapter.refreshAndClear(list);
 		} else {
