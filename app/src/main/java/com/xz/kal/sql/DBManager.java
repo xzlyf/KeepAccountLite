@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.orhanobut.logger.Logger;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
 import com.xz.kal.entity.DayBill;
@@ -197,7 +198,7 @@ public class DBManager {
 	}
 
 	/**
-	 * 查询记账
+	 * 查询记账（所有账单）
 	 */
 	public List<Bill> queryBill() {
 		SQLiteDatabase db = dbHelper.openDB();
@@ -252,10 +253,12 @@ public class DBManager {
 				.append(" order by ")
 				.append(FIELD_COMMON_CREATE)
 				.append(" desc ");//desc倒叙 asc顺序
+		//String sqlBuild = "select * from common c  join category g on c.category_id = g.id where create_time  between ? and ? order by create_time desc";
 		Cursor cursor = null;
 		List<Bill> list = new ArrayList<>();
 		try {
-			cursor = db.rawQuery(sqlBuild.toString(), null);
+			//cursor = db.rawQuery(sqlBuild, new String[]{String.valueOf(start), String.valueOf(end)});
+			cursor = db.rawQuery(sqlBuild.toString(),null);
 			Bill bill;
 			while (cursor.moveToNext()) {
 				bill = new Bill();
