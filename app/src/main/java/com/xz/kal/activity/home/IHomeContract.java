@@ -41,6 +41,9 @@ public interface IHomeContract {
 		//初始化标签
 		void init();
 
+		//获取钱包数据列表
+		List<Wallet> getWalletData();
+
 		//刷新今日日期
 		void getToday();
 

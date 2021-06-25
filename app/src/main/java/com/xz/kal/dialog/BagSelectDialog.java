@@ -1,6 +1,7 @@
 package com.xz.kal.dialog;
 
 import android.content.Context;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -8,6 +9,7 @@ import com.xz.kal.R;
 import com.xz.kal.base.BaseDialog;
 import com.xz.kal.entity.Wallet;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -24,9 +26,11 @@ public class BagSelectDialog extends BaseDialog {
 	@BindView(R.id.radio_group)
 	RadioGroup radioGroup;
 	private OnSelectItemListener mListener;
+	private List<Wallet> mList;
 
 	public BagSelectDialog(Context context) {
 		super(context);
+		mList = new ArrayList<>();
 	}
 
 	@Override
@@ -41,11 +45,24 @@ public class BagSelectDialog extends BaseDialog {
 	}
 
 	public void setWallList(List<Wallet> list) {
-
+		mList.clear();
+		mList.addAll(list);
 	}
+
 
 	public void setOnSelectItemListener(OnSelectItemListener listener) {
 		this.mListener = listener;
+	}
+
+	@Override
+	public void show() {
+		for (int i = 0; i < mList.size(); i++) {
+			RadioButton rb = new RadioButton(mContext);
+			rb.setText(mList.get(i).getName());
+			rb.setId(mList.get(i).getId());
+			radioGroup.addView(rb);
+		}
+		super.show();
 	}
 
 	public interface OnSelectItemListener {

@@ -1,5 +1,6 @@
 package com.xz.kal.activity.home;
 
+import com.orhanobut.logger.Logger;
 import com.xz.kal.constant.Local;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
@@ -7,6 +8,7 @@ import com.xz.kal.entity.DayBill;
 import com.xz.kal.entity.Wallet;
 import com.xz.kal.utils.CalendarUtil;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +28,7 @@ public class Presenter implements IHomeContract.IPresenter {
 	private IHomeContract.IView mView;
 	private IHomeContract.IModel model;
 	private Calendar dayCal;
+	private List<Wallet> wallets = new ArrayList<>();
 
 
 	Presenter(IHomeContract.IView view) {
@@ -58,15 +61,21 @@ public class Presenter implements IHomeContract.IPresenter {
 				.subscribe(new BlockingBaseObserver<List<Wallet>>() {
 					@Override
 					public void onNext(@NonNull List<Wallet> wallets) {
-
+						Presenter.this.wallets.clear();
+						Presenter.this.wallets.addAll(wallets);
 					}
 
 					@Override
 					public void onError(@NonNull Throwable e) {
-
+						Logger.e("钱包获取失败");
 					}
 				});
 
+	}
+
+	@Override
+	public List<Wallet> getWalletData() {
+		return wallets;
 	}
 
 	@Override

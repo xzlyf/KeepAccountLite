@@ -72,6 +72,7 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 		refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
+				mPresenter.init();
 				mPresenter.getBill();
 				mPresenter.getToday();
 			}
@@ -90,6 +91,7 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 			case R.id.tv_wallet:
 				BagSelectDialog dialog = new BagSelectDialog(mContext);
 				dialog.create();
+				dialog.setWallList(mPresenter.getWalletData());
 				dialog.show();
 				break;
 		}
