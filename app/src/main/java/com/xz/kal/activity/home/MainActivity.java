@@ -39,6 +39,8 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 	TextView tvDayOut;
 	@BindView(R.id.refresh_layout)
 	SwipeRefreshLayout refreshLayout;
+	@BindView(R.id.tv_wallet)
+	TextView tvWallet;
 
 	private Presenter mPresenter;
 	private BillAdapterV2 billAdapter;
@@ -128,6 +130,11 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 		} else {
 			billAdapter.refreshAndClear(new ArrayList<>());
 		}
+	}
+
+	@Override
+	public void setBag(String text) {
+		tvWallet.setText(String.format("%s ▾", text));
 	}
 
 }

@@ -12,13 +12,10 @@ public class CategoryDao {
 	public static final String ICON = "icon";
 	public static final String INOUT = "inout";
 
-	public static final String CREATE_SQL = "CREATE TABLE common (" +
-			"    id          INTEGER PRIMARY KEY AUTOINCREMENT," +
-			"    category_id INTEGER NOT NULL," +
-			"    inout       VARCHAR(32)," +
-			"    money       REAL," +
-			"    remark      TEXT," +
-			"    update_time INTEGER," +
-			"    create_time INTEGER" +
+	public static final String CREATE_SQL = "CREATE TABLE category (" +
+			"    id    INTEGER PRIMARY KEY AUTOINCREMENT," +
+			"    label TEXT    NOT NULL," +
+			"    icon  TEXT    NOT NULL," +
+			"    inout VARCHAR(32) " +
 			");";
 }

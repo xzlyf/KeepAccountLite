@@ -63,6 +63,9 @@ public class Presenter implements IHomeContract.IPresenter {
 					public void onNext(@NonNull List<Wallet> wallets) {
 						Presenter.this.wallets.clear();
 						Presenter.this.wallets.addAll(wallets);
+						if (wallets.size() > 0) {
+							mView.setBag(wallets.get(0).getName());
+						}
 					}
 
 					@Override

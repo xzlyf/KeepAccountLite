@@ -50,10 +50,6 @@ public class Model implements IHomeContract.IModel {
 			@Override
 			public void subscribe(@NonNull ObservableEmitter<DayBill> emitter) throws Throwable {
 				DayBill dayBill = db.calcBill(start, end);
-				BigDecimal inDec = new BigDecimal(dayBill.getDayIn());
-				BigDecimal outDec = new BigDecimal(dayBill.getDayOut());
-				//计算收支
-				dayBill.setDayTotal(inDec.subtract(outDec).doubleValue());
 				emitter.onNext(dayBill);
 			}
 		});

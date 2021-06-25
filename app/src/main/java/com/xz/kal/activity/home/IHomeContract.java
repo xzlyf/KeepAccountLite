@@ -72,5 +72,7 @@ public interface IHomeContract {
 
 		void refresh(List<Bill> list);
 
+		void setBag(String text);
+
 	}
 }

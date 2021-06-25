@@ -1,9 +1,9 @@
 package com.xz.kal.dialog;
 
 import android.content.Context;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.xz.kal.R;
 import com.xz.kal.base.BaseDialog;
@@ -23,8 +23,8 @@ public class BagSelectDialog extends BaseDialog {
 
 	@BindView(R.id.tv_title)
 	TextView tvTitle;
-	@BindView(R.id.radio_group)
-	RadioGroup radioGroup;
+	@BindView(R.id.recycler_wallet)
+	RecyclerView recyclerView;
 	private OnSelectItemListener mListener;
 	private List<Wallet> mList;
 
@@ -56,12 +56,6 @@ public class BagSelectDialog extends BaseDialog {
 
 	@Override
 	public void show() {
-		for (int i = 0; i < mList.size(); i++) {
-			RadioButton rb = new RadioButton(mContext);
-			rb.setText(mList.get(i).getName());
-			rb.setId(mList.get(i).getId());
-			radioGroup.addView(rb);
-		}
 		super.show();
 	}
 

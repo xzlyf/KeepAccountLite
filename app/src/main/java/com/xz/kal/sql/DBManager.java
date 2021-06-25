@@ -13,6 +13,7 @@ import com.xz.kal.sql.dao.BillDao;
 import com.xz.kal.sql.dao.CategoryDao;
 import com.xz.kal.sql.dao.WalletDao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -239,7 +240,11 @@ public class DBManager {
 				double total = cursor.getDouble(cursor.getColumnIndex("sum(money)"));
 				dayBill.setDayOut(total);
 			}
-			//todo 计算今日收支总和
+			BigDecimal inDec = new BigDecimal(dayBill.getDayIn());
+			BigDecimal outDec = new BigDecimal(dayBill.getDayOut());
+			//计算收支
+			dayBill.setDayTotal(inDec.subtract(outDec).doubleValue());
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			dayBill.setDayIn(1f);
