@@ -11,7 +11,6 @@ import com.xz.kal.sql.DefaultData;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,10 +59,10 @@ public class Model implements IHomeContract.IModel {
 	}
 
 	@Override
-	public Observable<Map<Integer, Category>> getCategory() {
-		return Observable.create(new ObservableOnSubscribe<Map<Integer, Category>>() {
+	public Observable<List<Category>> getCategory() {
+		return Observable.create(new ObservableOnSubscribe<List<Category>>() {
 			@Override
-			public void subscribe(@NonNull ObservableEmitter<Map<Integer, Category>> emitter) throws Throwable {
+			public void subscribe(@NonNull ObservableEmitter<List<Category>> emitter) throws Throwable {
 				List<Category> list = db.queryCategory();
 				if (list.size() == 0) {
 					//等于空，那重新生成默认分类给数据库
@@ -72,13 +71,7 @@ public class Model implements IHomeContract.IModel {
 					db.insertCategory(list);
 				}
 
-				//填装map，供全局使用
-				Map<Integer, Category> categoryMap = new HashMap<>();
-				for (Category c : list) {
-					categoryMap.put(c.getId(), c);
-				}
-
-				emitter.onNext(categoryMap);
+				emitter.onNext(list);
 			}
 		});
 	}

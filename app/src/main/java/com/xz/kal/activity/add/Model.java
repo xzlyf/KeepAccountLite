@@ -4,8 +4,8 @@ import com.xz.kal.base.BaseApplication;
 import com.xz.kal.constant.Local;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
-import com.xz.kal.sql.DBHelper;
 import com.xz.kal.sql.DBManager;
+import com.xz.kal.sql.dao.BillDao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,18 +23,25 @@ import io.reactivex.rxjava3.core.ObservableOnSubscribe;
  * @date 2021/6/22
  */
 class Model implements IAddContract.IModel {
+	private DBManager db;
+
+	public Model() {
+		db = DBManager.getInstance(BaseApplication.getContext());
+	}
+
 	@Override
 	public Observable<Map<Integer, List<Category>>> getItemData() {
 		return Observable.create(new ObservableOnSubscribe<Map<Integer, List<Category>>>() {
 			@Override
 			public void subscribe(@NonNull ObservableEmitter<Map<Integer, List<Category>>> emitter) throws Throwable {
+				List<Category> allList = db.queryCategory();
 				List<Category> inList = new ArrayList<>();
 				List<Category> outList = new ArrayList<>();
-				for (Map.Entry<Integer, Category> entry : Local.categories.entrySet()) {
-					if (entry.getValue().getInout().contentEquals(Local.SYMBOL_IN)) {
-						inList.add(entry.getValue());
-					} else {
-						outList.add(entry.getValue());
+				for (Category c : allList) {
+					if (c.getInout().contentEquals(Local.SYMBOL_IN)){
+						inList.add(c);
+					}else if (c.getInout().contentEquals(Local.SYMBOL_OUT)){
+						outList.add(c);
 					}
 				}
 
@@ -51,10 +58,9 @@ class Model implements IAddContract.IModel {
 		return Observable.create(new ObservableOnSubscribe<Bill>() {
 			@Override
 			public void subscribe(@NonNull ObservableEmitter<Bill> emitter) throws Throwable {
-				DBManager db = DBManager.getInstance(BaseApplication.getContext());
 				db.insertBill(bill);
 				//加上生成的主键id
-				bill.setId(db.queryLastNewRowId(DBHelper.TABLE_COMMON));
+				bill.setId(db.queryLastNewRowId(BillDao.TABLE_NAME));
 				emitter.onNext(bill);
 			}
 		});

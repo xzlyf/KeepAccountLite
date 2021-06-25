@@ -28,7 +28,7 @@ public interface IHomeContract {
 		Observable<DayBill> calcBill(Date start, Date end);
 
 		//获取所有分类标签数据，包括默认标签和用户自定标签
-		Observable<Map<Integer, Category>> getCategory();
+		Observable<List<Category>> getCategory();
 
 		//存储分类标签数据
 		Observable<Integer> saveCategory(List<Category> list);

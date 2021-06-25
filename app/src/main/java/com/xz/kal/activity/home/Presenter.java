@@ -1,17 +1,12 @@
 package com.xz.kal.activity.home;
 
-import com.orhanobut.logger.Logger;
-import com.xz.kal.constant.Local;
 import com.xz.kal.entity.Bill;
-import com.xz.kal.entity.Category;
 import com.xz.kal.entity.DayBill;
 import com.xz.kal.utils.CalendarUtil;
 
-import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -43,26 +38,7 @@ public class Presenter implements IHomeContract.IPresenter {
 
 	@Override
 	public void getBill() {
-		//先获取分类标签数据再获取标签数据
-		if (Local.categories == null) {
-			model.getCategory()
-					.subscribeOn(Schedulers.newThread())
-					.observeOn(AndroidSchedulers.mainThread())
-					.subscribe(new BlockingBaseObserver<Map<Integer, Category>>() {
-						@Override
-						public void onNext(@NonNull Map<Integer, Category> list) {
-							Local.categories = list;
-							getBill(CalendarUtil.getDayStart().getTime(), CalendarUtil.getDayEnd().getTime());
-						}
-
-						@Override
-						public void onError(@NonNull Throwable e) {
-
-						}
-					});
-		} else {
-			getBill(CalendarUtil.getDayStart().getTime(), CalendarUtil.getDayEnd().getTime());
-		}
+		getBill(CalendarUtil.getDayStart().getTime(), CalendarUtil.getDayEnd().getTime());
 	}
 
 	@Override

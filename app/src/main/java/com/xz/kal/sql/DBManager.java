@@ -5,29 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.orhanobut.logger.Logger;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
 import com.xz.kal.entity.DayBill;
+import com.xz.kal.sql.dao.BillDao;
+import com.xz.kal.sql.dao.CategoryDao;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
-
-import static com.xz.kal.sql.DBHelper.FIELD_CATEGORY_ICON;
-import static com.xz.kal.sql.DBHelper.FIELD_CATEGORY_ID;
-import static com.xz.kal.sql.DBHelper.FIELD_CATEGORY_INOUT;
-import static com.xz.kal.sql.DBHelper.FIELD_CATEGORY_LABEL;
-import static com.xz.kal.sql.DBHelper.FIELD_COMMON_CATEGORY_ID;
-import static com.xz.kal.sql.DBHelper.FIELD_COMMON_CREATE;
-import static com.xz.kal.sql.DBHelper.FIELD_COMMON_ID;
-import static com.xz.kal.sql.DBHelper.FIELD_COMMON_INOUT;
-import static com.xz.kal.sql.DBHelper.FIELD_COMMON_MONEY;
-import static com.xz.kal.sql.DBHelper.FIELD_COMMON_REMARK;
-import static com.xz.kal.sql.DBHelper.FIELD_COMMON_UPDATE;
-import static com.xz.kal.sql.DBHelper.TABLE_CATEGORY;
-import static com.xz.kal.sql.DBHelper.TABLE_COMMON;
 
 /**
  * @author czr
@@ -119,13 +105,13 @@ public class DBManager {
 	public void insertBill(Bill bill) {
 		SQLiteDatabase db = dbHelper.openDB();
 		ContentValues cv = new ContentValues();
-		cv.put(FIELD_COMMON_CATEGORY_ID, bill.getCategoryId());
-		cv.put(FIELD_COMMON_INOUT, bill.getInout());
-		cv.put(FIELD_COMMON_MONEY, bill.getMoney());
-		cv.put(FIELD_COMMON_REMARK, bill.getRemark());
-		cv.put(FIELD_COMMON_UPDATE, bill.getUpdateTime().getTime());
-		cv.put(FIELD_COMMON_CREATE, bill.getCreateTime().getTime());
-		db.insert(TABLE_COMMON, null, cv);
+		cv.put(BillDao.CATEGORY_ID, bill.getCategory().getId());
+		cv.put(BillDao.INOUT, bill.getInout());
+		cv.put(BillDao.MONEY, bill.getMoney());
+		cv.put(BillDao.REMARK, bill.getRemark());
+		cv.put(BillDao.UPDATE_TIME, bill.getUpdateTime().getTime());
+		cv.put(BillDao.CREATE_TIME, bill.getCreateTime().getTime());
+		db.insert(BillDao.TABLE_NAME, null, cv);
 		dbHelper.closeDB();
 	}
 
@@ -137,7 +123,7 @@ public class DBManager {
 
 	public int deleteBill(int id) {
 		SQLiteDatabase db = dbHelper.openDB();
-		int line = db.delete(TABLE_COMMON, FIELD_COMMON_ID + "=?", new String[]{String.valueOf(id)});
+		int line = db.delete(BillDao.TABLE_NAME, BillDao.ID + "=?", new String[]{String.valueOf(id)});
 		dbHelper.closeDB();
 		return line;
 
@@ -152,13 +138,13 @@ public class DBManager {
 	public int updateBill(int id, Bill bill) {
 		SQLiteDatabase db = dbHelper.openDB();
 		ContentValues cv = new ContentValues();
-		cv.put(FIELD_COMMON_CATEGORY_ID, bill.getCategoryId());
-		cv.put(FIELD_COMMON_INOUT, bill.getInout());
-		cv.put(FIELD_COMMON_MONEY, bill.getMoney());
-		cv.put(FIELD_COMMON_REMARK, bill.getRemark());
-		cv.put(FIELD_COMMON_UPDATE, bill.getUpdateTime().getTime());
-		cv.put(FIELD_COMMON_CREATE, bill.getCreateTime().getTime());
-		int line = db.update(TABLE_COMMON, cv, FIELD_COMMON_ID + "=?", new String[]{String.valueOf(id)});
+		cv.put(BillDao.CATEGORY_ID, bill.getCategory().getId());
+		cv.put(BillDao.INOUT, bill.getInout());
+		cv.put(BillDao.MONEY, bill.getMoney());
+		cv.put(BillDao.REMARK, bill.getRemark());
+		cv.put(BillDao.UPDATE_TIME, bill.getUpdateTime().getTime());
+		cv.put(BillDao.CREATE_TIME, bill.getCreateTime().getTime());
+		int line = db.update(BillDao.TABLE_NAME, cv, BillDao.ID + "=?", new String[]{String.valueOf(id)});
 		dbHelper.closeDB();
 		return line;
 	}
@@ -166,68 +152,17 @@ public class DBManager {
 	/**
 	 * 根据账单id查询账单数据
 	 *
-	 * @param id
 	 * @return
 	 */
 	public Bill queryBill(int id) {
-		SQLiteDatabase db = dbHelper.openDB();
-		String sql = "select * from " + TABLE_COMMON + " where " + FIELD_COMMON_ID + " = " + id;
-		Cursor cursor = null;
-		Bill bill = null;
-		try {
-			cursor = db.rawQuery(sql, null);
-			if (cursor.moveToNext()) {
-				bill = new Bill();
-				bill.setId(cursor.getInt(0));
-				bill.setCategoryId(cursor.getInt(1));
-				bill.setInout(cursor.getString(2));
-				bill.setMoney(cursor.getDouble(3));
-				bill.setRemark(cursor.getString(4));
-				bill.setUpdateTime(new Date(cursor.getLong(5)));
-				bill.setCreateTime(new Date(cursor.getLong(6)));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (cursor != null) {
-				cursor.close();
-			}
-			dbHelper.closeDB();
-		}
-		return bill;
+		return null;
 	}
 
 	/**
 	 * 查询记账（所有账单）
 	 */
 	public List<Bill> queryBill() {
-		SQLiteDatabase db = dbHelper.openDB();
-		String sql = "select * from " + TABLE_COMMON;
-		Cursor cursor = null;
-		List<Bill> list = new ArrayList<>();
-		Bill bill;
-		try {
-			cursor = db.rawQuery(sql, null);
-			while (cursor.moveToNext()) {
-				bill = new Bill();
-				bill.setId(cursor.getInt(0));
-				bill.setCategoryId(cursor.getInt(1));
-				bill.setInout(cursor.getString(2));
-				bill.setMoney(cursor.getDouble(3));
-				bill.setRemark(cursor.getString(4));
-				bill.setUpdateTime(new Date(cursor.getLong(5)));
-				bill.setCreateTime(new Date(cursor.getLong(6)));
-				list.add(bill);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (cursor != null) {
-				cursor.close();
-			}
-			dbHelper.closeDB();
-		}
-		return list;
+		return null;
 	}
 
 	/**
@@ -239,36 +174,30 @@ public class DBManager {
 	 */
 	public List<Bill> queryBill(long start, long end) {
 		SQLiteDatabase db = dbHelper.openDB();
-		StringBuilder sqlBuild = new StringBuilder();
-		sqlBuild.append("select ")
-				.append(" * ")
-				.append(" from ")
-				.append(TABLE_COMMON)
-				.append(" where ")
-				.append(FIELD_COMMON_CREATE)
-				.append(" between ")
-				.append(start)
-				.append(" and ")
-				.append(end)
-				.append(" order by ")
-				.append(FIELD_COMMON_CREATE)
-				.append(" desc ");//desc倒叙 asc顺序
-		//String sqlBuild = "select * from common c  join category g on c.category_id = g.id where create_time  between ? and ? order by create_time desc";
+		String sqlBuild = "select * from " + BillDao.TABLE_NAME + " c join " + CategoryDao.TABLE_NAME
+				+ " g on c." + BillDao.CATEGORY_ID + " = g." + CategoryDao.ID +
+				" where " + BillDao.CREATE_TIME + "  between ? and ? order by " + BillDao.CREATE_TIME + " desc";
 		Cursor cursor = null;
 		List<Bill> list = new ArrayList<>();
 		try {
-			//cursor = db.rawQuery(sqlBuild, new String[]{String.valueOf(start), String.valueOf(end)});
-			cursor = db.rawQuery(sqlBuild.toString(),null);
+			//返回结果包含了Bill和Category的所有字段，bill在前面
+			cursor = db.rawQuery(sqlBuild, new String[]{String.valueOf(start), String.valueOf(end)});
 			Bill bill;
+			Category category;
 			while (cursor.moveToNext()) {
 				bill = new Bill();
+				category = new Category();
 				bill.setId(cursor.getInt(0));
-				bill.setCategoryId(cursor.getInt(1));
 				bill.setInout(cursor.getString(2));
 				bill.setMoney(cursor.getDouble(3));
 				bill.setRemark(cursor.getString(4));
 				bill.setUpdateTime(new Date(cursor.getLong(5)));
 				bill.setCreateTime(new Date(cursor.getLong(6)));
+				category.setId(cursor.getInt(7));
+				category.setLabel(cursor.getString(8));
+				category.setIcon(cursor.getInt(9));
+				category.setInout(cursor.getString(10));
+				bill.setCategory(category);
 				list.add(bill);
 			}
 		} catch (Exception e) {
@@ -279,113 +208,6 @@ public class DBManager {
 			}
 		}
 
-		return list;
-	}
-
-	/*
-	============================分类表操作=============================
-	 */
-
-
-	/**
-	 * 新增分类标签
-	 */
-	public void insertCategory(Category category) {
-		SQLiteDatabase db = dbHelper.openDB();
-		ContentValues cv = new ContentValues();
-		cv.put(FIELD_CATEGORY_LABEL, category.getLabel());
-		cv.put(FIELD_CATEGORY_ICON, category.getIcon());
-		cv.put(FIELD_CATEGORY_INOUT, category.getInout());
-		db.insert(TABLE_CATEGORY, null, cv);
-		dbHelper.closeDB();
-	}
-
-	/**
-	 * 新增分类标签 (开启事务-快速插入)
-	 *
-	 * @return 0 所有数据存入无错误   非0 错误数量
-	 */
-	public int insertCategory(List<Category> list) {
-		SQLiteDatabase db = dbHelper.openDB();
-		//开启事务
-		db.beginTransaction();
-		ContentValues cv;
-		int failedCount = 0;
-		try {
-			for (Category category : list) {
-				cv = new ContentValues();
-				cv.put(FIELD_CATEGORY_LABEL, category.getLabel());
-				cv.put(FIELD_CATEGORY_ICON, category.getIcon());
-				cv.put(FIELD_CATEGORY_INOUT, category.getInout());
-				db.insert(TABLE_CATEGORY, null, cv);
-			}
-			db.setTransactionSuccessful();
-		} catch (Throwable e) {
-			failedCount -= 1;
-		} finally {
-			db.endTransaction();
-		}
-		return failedCount;
-	}
-
-	/**
-	 * 删除分类标签
-	 *
-	 * @param id 标签d
-	 */
-
-	public int deleteCategory(int id) {
-		SQLiteDatabase db = dbHelper.openDB();
-		int line = db.delete(TABLE_CATEGORY, FIELD_CATEGORY_ID + "=?", new String[]{String.valueOf(id)});
-		dbHelper.closeDB();
-		return line;
-
-	}
-
-	/**
-	 * 修改分类
-	 *
-	 * @param id       分类id
-	 * @param category 新的分类
-	 */
-	public int updateCategory(int id, Category category) {
-		SQLiteDatabase db = dbHelper.openDB();
-		ContentValues cv = new ContentValues();
-		cv.put(FIELD_CATEGORY_LABEL, category.getLabel());
-		cv.put(FIELD_CATEGORY_ICON, category.getIcon());
-		cv.put(FIELD_CATEGORY_INOUT, category.getInout());
-		int line = db.update(TABLE_CATEGORY, cv, FIELD_CATEGORY_ID + "=?", new String[]{String.valueOf(id)});
-		dbHelper.closeDB();
-		return line;
-	}
-
-	/**
-	 * 查询分类
-	 */
-	public List<Category> queryCategory() {
-		SQLiteDatabase db = dbHelper.openDB();
-		String sql = "select * from " + TABLE_CATEGORY;
-		Cursor cursor = null;
-		List<Category> list = new ArrayList<>();
-		Category category;
-		try {
-			cursor = db.rawQuery(sql, null);
-			while (cursor.moveToNext()) {
-				category = new Category();
-				category.setId(cursor.getInt(0));
-				category.setLabel(cursor.getString(1));
-				category.setIcon(cursor.getInt(2));
-				category.setInout(cursor.getString(3));
-				list.add(category);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (cursor != null) {
-				cursor.close();
-			}
-			dbHelper.closeDB();
-		}
 		return list;
 	}
 
@@ -398,9 +220,9 @@ public class DBManager {
 	 */
 	public DayBill calcBill(Date start, Date end) {
 		//查询指定日期的收入金额sql语句
-		String sqlIn = "SELECT sum(" + FIELD_COMMON_MONEY + ") FROM " + TABLE_COMMON + " where inout =\"in\" and " + FIELD_COMMON_CREATE + " between " + start.getTime() + " and " + end.getTime();
+		String sqlIn = "SELECT sum(" + BillDao.MONEY + ") FROM " + BillDao.TABLE_NAME + " where inout =\"in\" and " + BillDao.CREATE_TIME + " between " + start.getTime() + " and " + end.getTime();
 		//查询指定日期的支出金额sql语句
-		String sqlOut = "SELECT sum(" + FIELD_COMMON_MONEY + ") FROM " + TABLE_COMMON + " where inout =\"out\" and " + FIELD_COMMON_CREATE + " between " + start.getTime() + " and " + end.getTime();
+		String sqlOut = "SELECT sum(" + BillDao.MONEY + ") FROM " + BillDao.TABLE_NAME + " where inout =\"out\" and " + BillDao.CREATE_TIME + " between " + start.getTime() + " and " + end.getTime();
 		DayBill dayBill = new DayBill();
 		SQLiteDatabase db = dbHelper.openDB();
 		Cursor cursor = null;
@@ -430,18 +252,111 @@ public class DBManager {
 		return dayBill;
 	}
 
+	/*
+	============================分类表操作=============================
+	 */
 
-	public void testData() {
-		Random random = new Random();
-		for (int i = 0; i < 10; i++) {
-			Bill bill = new Bill();
-			bill.setCategoryId(i + 1);
-			bill.setInout(Math.random() > 0.5 ? "in" : "out");
-			bill.setMoney(random.nextInt(100));
-			bill.setRemark("没有备注");
-			bill.setCreateTime(new Date());
-			bill.setUpdateTime(new Date());
-			insertBill(bill);
-		}
+
+	/**
+	 * 新增分类标签
+	 */
+	public void insertCategory(Category category) {
+		SQLiteDatabase db = dbHelper.openDB();
+		ContentValues cv = new ContentValues();
+		cv.put(CategoryDao.LABEL, category.getLabel());
+		cv.put(CategoryDao.ICON, category.getIcon());
+		cv.put(CategoryDao.INOUT, category.getInout());
+		db.insert(CategoryDao.TABLE_NAME, null, cv);
+		dbHelper.closeDB();
 	}
+
+	/**
+	 * 新增分类标签 (开启事务-快速插入)
+	 *
+	 * @return 0 所有数据存入无错误   非0 错误数量
+	 */
+	public int insertCategory(List<Category> list) {
+		SQLiteDatabase db = dbHelper.openDB();
+		//开启事务
+		db.beginTransaction();
+		ContentValues cv;
+		int failedCount = 0;
+		try {
+			for (Category category : list) {
+				cv = new ContentValues();
+				cv.put(CategoryDao.LABEL, category.getLabel());
+				cv.put(CategoryDao.ICON, category.getIcon());
+				cv.put(CategoryDao.INOUT, category.getInout());
+				db.insert(CategoryDao.TABLE_NAME, null, cv);
+			}
+			db.setTransactionSuccessful();
+		} catch (Throwable e) {
+			failedCount -= 1;
+		} finally {
+			db.endTransaction();
+		}
+		return failedCount;
+	}
+
+	/**
+	 * 删除分类标签
+	 *
+	 * @param id 标签d
+	 */
+
+	public int deleteCategory(int id) {
+		SQLiteDatabase db = dbHelper.openDB();
+		int line = db.delete(CategoryDao.TABLE_NAME, CategoryDao.ID + "=?", new String[]{String.valueOf(id)});
+		dbHelper.closeDB();
+		return line;
+
+	}
+
+	/**
+	 * 修改分类
+	 *
+	 * @param id       分类id
+	 * @param category 新的分类
+	 */
+	public int updateCategory(int id, Category category) {
+		SQLiteDatabase db = dbHelper.openDB();
+		ContentValues cv = new ContentValues();
+		cv.put(CategoryDao.LABEL, category.getLabel());
+		cv.put(CategoryDao.ICON, category.getIcon());
+		cv.put(CategoryDao.INOUT, category.getInout());
+		int line = db.update(CategoryDao.TABLE_NAME, cv, CategoryDao.ID + "=?", new String[]{String.valueOf(id)});
+		dbHelper.closeDB();
+		return line;
+	}
+
+	/**
+	 * 查询分类
+	 */
+	public List<Category> queryCategory() {
+		SQLiteDatabase db = dbHelper.openDB();
+		String sql = "select * from " + CategoryDao.TABLE_NAME;
+		Cursor cursor = null;
+		List<Category> list = new ArrayList<>();
+		Category category;
+		try {
+			cursor = db.rawQuery(sql, null);
+			while (cursor.moveToNext()) {
+				category = new Category();
+				category.setId(cursor.getInt(0));
+				category.setLabel(cursor.getString(1));
+				category.setIcon(cursor.getInt(2));
+				category.setInout(cursor.getString(3));
+				list.add(category);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+			dbHelper.closeDB();
+		}
+		return list;
+	}
+
 }

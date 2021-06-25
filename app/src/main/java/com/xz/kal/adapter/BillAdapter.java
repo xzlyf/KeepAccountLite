@@ -35,7 +35,7 @@ public class BillAdapter extends BaseRecyclerAdapter<Bill> {
 	protected void showViewHolder(BaseRecyclerViewHolder holder, int position) {
 		ViewHolder viewHolder = (ViewHolder) holder;
 		Bill bill = mList.get(position);
-		Category category = Local.categories.get(bill.getCategoryId());
+		Category category = bill.getCategory();
 		if (category == null) {
 			category = new Category();
 			category.setLabel("未知");

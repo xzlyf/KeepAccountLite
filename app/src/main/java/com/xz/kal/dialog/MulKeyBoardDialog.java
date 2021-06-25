@@ -320,7 +320,7 @@ public class MulKeyBoardDialog extends BaseDialog {
 		bill.setUpdateTime(bill.getCreateTime());
 		bill.setRemark(remarks.getText().toString().trim());
 		bill.setInout(mCategory.getInout());
-		bill.setCategoryId(mCategory.getId());
+		bill.setCategory(mCategory);
 		bill.setMoney(m);
 
 		if (mCallback != null) {

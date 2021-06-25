@@ -9,8 +9,9 @@ import java.util.Date;
  * @date 2021/6/16
  */
 public class Bill implements Serializable {
+
 	private int id;
-	private int categoryId;
+	private Category category;
 	private String inout;
 	private double money;
 	private String remark;
@@ -25,12 +26,12 @@ public class Bill implements Serializable {
 		this.id = id;
 	}
 
-	public int getCategoryId() {
-		return categoryId;
+	public Category getCategory() {
+		return category;
 	}
 
-	public void setCategoryId(int categoryId) {
-		this.categoryId = categoryId;
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 	public String getInout() {
@@ -77,7 +78,7 @@ public class Bill implements Serializable {
 	public String toString() {
 		return "Bill{" +
 				"id=" + id +
-				", categoryId=" + categoryId +
+				", categoryId=" + category +
 				", inout='" + inout + '\'' +
 				", money=" + money +
 				", remark='" + remark + '\'' +
