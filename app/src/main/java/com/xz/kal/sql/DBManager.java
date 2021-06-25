@@ -8,8 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
 import com.xz.kal.entity.DayBill;
+import com.xz.kal.entity.Wallet;
 import com.xz.kal.sql.dao.BillDao;
 import com.xz.kal.sql.dao.CategoryDao;
+import com.xz.kal.sql.dao.WalletDao;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -347,6 +349,105 @@ public class DBManager {
 				category.setIcon(cursor.getInt(2));
 				category.setInout(cursor.getString(3));
 				list.add(category);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+			dbHelper.closeDB();
+		}
+		return list;
+	}
+
+
+	/*
+	============================钱包表操作=============================
+	 */
+
+	/**
+	 * 新增钱包
+	 */
+	public void insertWallet(Wallet wallet) {
+		SQLiteDatabase db = dbHelper.openDB();
+		ContentValues cv = new ContentValues();
+		cv.put(WalletDao.LABEL, wallet.getName());
+		db.insert(WalletDao.TABLE_NAME, null, cv);
+		dbHelper.closeDB();
+	}
+
+	/**
+	 * 新增钱包 (开启事务-快速插入)
+	 *
+	 * @return 0 所有数据存入无错误   非0 错误数量
+	 */
+	public int insertWallet(List<Wallet> list) {
+		SQLiteDatabase db = dbHelper.openDB();
+		//开启事务
+		db.beginTransaction();
+		ContentValues cv;
+		int failedCount = 0;
+		try {
+			for (Wallet wallet : list) {
+				cv = new ContentValues();
+				cv.put(CategoryDao.LABEL, wallet.getName());
+				db.insert(WalletDao.TABLE_NAME, null, cv);
+			}
+			db.setTransactionSuccessful();
+		} catch (Throwable e) {
+			failedCount -= 1;
+		} finally {
+			db.endTransaction();
+		}
+		return failedCount;
+	}
+
+	/**
+	 * 删除钱包
+	 *
+	 * @param id 钱包id
+	 */
+
+	public int deleteWallet(int id) {
+		SQLiteDatabase db = dbHelper.openDB();
+		int line = db.delete(WalletDao.TABLE_NAME, WalletDao.ID + "=?", new String[]{String.valueOf(id)});
+		dbHelper.closeDB();
+		return line;
+
+	}
+
+	/**
+	 * 修改钱包
+	 *
+	 * @param id     钱包id
+	 * @param wallet 新的分类
+	 */
+	public int updateCategory(int id, Wallet wallet) {
+		SQLiteDatabase db = dbHelper.openDB();
+		ContentValues cv = new ContentValues();
+		cv.put(CategoryDao.LABEL, wallet.getName());
+		int line = db.update(WalletDao.TABLE_NAME, cv, WalletDao.ID + "=?", new String[]{String.valueOf(id)});
+		dbHelper.closeDB();
+		return line;
+	}
+
+	/**
+	 * 查询钱包
+	 */
+	public List<Wallet> queryWallet() {
+		SQLiteDatabase db = dbHelper.openDB();
+		String sql = "select * from " + WalletDao.TABLE_NAME;
+		Cursor cursor = null;
+		List<Wallet> list = new ArrayList<>();
+		Wallet wallet;
+		try {
+			cursor = db.rawQuery(sql, null);
+			while (cursor.moveToNext()) {
+				wallet = new Wallet();
+				wallet.setId(cursor.getInt(0));
+				wallet.setName(cursor.getString(1));
+				list.add(wallet);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

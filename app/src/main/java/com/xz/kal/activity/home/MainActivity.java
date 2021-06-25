@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 		mPresenter = new Presenter(this);
 		changeNavigatorBar();
 		initView();
-		mPresenter.initCategory();
+		mPresenter.init();
 		mPresenter.getBill();
 		mPresenter.getToday();
 

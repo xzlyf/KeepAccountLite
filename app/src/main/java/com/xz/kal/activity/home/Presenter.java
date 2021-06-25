@@ -4,6 +4,7 @@ import com.xz.kal.constant.Local;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
 import com.xz.kal.entity.DayBill;
+import com.xz.kal.entity.Wallet;
 import com.xz.kal.utils.CalendarUtil;
 
 import java.util.Calendar;
@@ -34,7 +35,8 @@ public class Presenter implements IHomeContract.IPresenter {
 	}
 
 	@Override
-	public void initCategory() {
+	public void init() {
+		//如果没有标签则生成默认标签数据
 		model.getCategory()
 				.subscribeOn(Schedulers.newThread())
 				.observeOn(AndroidSchedulers.mainThread())
@@ -49,6 +51,22 @@ public class Presenter implements IHomeContract.IPresenter {
 						Local.initCategory = false;
 					}
 				});
+		//如果没有钱包，生成默认钱包
+		model.getWallet()
+				.subscribeOn(Schedulers.newThread())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new BlockingBaseObserver<List<Wallet>>() {
+					@Override
+					public void onNext(@NonNull List<Wallet> wallets) {
+
+					}
+
+					@Override
+					public void onError(@NonNull Throwable e) {
+
+					}
+				});
+
 	}
 
 	@Override

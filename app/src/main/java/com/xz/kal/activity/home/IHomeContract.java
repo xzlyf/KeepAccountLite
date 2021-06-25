@@ -5,11 +5,11 @@ import com.xz.kal.base.IBaseView;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
 import com.xz.kal.entity.DayBill;
+import com.xz.kal.entity.Wallet;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.rxjava3.core.Observable;
 
@@ -32,11 +32,14 @@ public interface IHomeContract {
 
 		//存储分类标签数据
 		Observable<Integer> saveCategory(List<Category> list);
+
+		//获取钱包数据
+		Observable<List<Wallet>> getWallet();
 	}
 
 	interface IPresenter {
 		//初始化标签
-		void initCategory();
+		void init();
 
 		//刷新今日日期
 		void getToday();

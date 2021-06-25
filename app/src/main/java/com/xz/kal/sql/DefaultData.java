@@ -2,6 +2,7 @@ package com.xz.kal.sql;
 
 import com.xz.kal.R;
 import com.xz.kal.entity.Category;
+import com.xz.kal.entity.Wallet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,9 @@ public class DefaultData {
 		return instance;
 	}
 
+	/**
+	 * 生成默认标签数据
+	 */
 	public List<Category> makeDefaultCategory() {
 		List<Category> list = new ArrayList<>();
 		list.add(new Category(1, "购物", R.mipmap.ic_gouwu, "out"));
@@ -60,7 +64,19 @@ public class DefaultData {
 		list.add(new Category(24, "礼金", R.mipmap.ic_shengjilijin, "in"));
 		list.add(new Category(25, "理财", R.mipmap.ic_licai, "in"));
 		list.add(new Category(26, "理财", R.mipmap.ic_jianzhi, "in"));
-		list.add(new Category(27,"其他收入", R.mipmap.ic_shouru, "in"));
+		list.add(new Category(27, "其他收入", R.mipmap.ic_shouru, "in"));
+		return list;
+	}
+
+	/**
+	 * 生成默认钱包
+	 *
+	 * @return
+	 */
+	public List<Wallet> makeDefaultWallet() {
+		List<Wallet> list = new ArrayList<>();
+		Wallet wallet1 = new Wallet(1, "零钱");
+		list.add(wallet1);
 		return list;
 	}
 }

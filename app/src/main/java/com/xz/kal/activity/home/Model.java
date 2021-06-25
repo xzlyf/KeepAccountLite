@@ -5,6 +5,7 @@ import com.xz.kal.base.BaseApplication;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
 import com.xz.kal.entity.DayBill;
+import com.xz.kal.entity.Wallet;
 import com.xz.kal.sql.DBManager;
 import com.xz.kal.sql.DefaultData;
 
@@ -84,6 +85,21 @@ public class Model implements IHomeContract.IModel {
 			public void subscribe(@NonNull ObservableEmitter<Integer> emitter) throws Throwable {
 				int count = db.insertCategory(list);
 				emitter.onNext(count);
+			}
+		});
+	}
+
+	@Override
+	public Observable<List<Wallet>> getWallet() {
+		return Observable.create(new ObservableOnSubscribe<List<Wallet>>() {
+			@Override
+			public void subscribe(@NonNull ObservableEmitter<List<Wallet>> emitter) throws Throwable {
+				List<Wallet> list = db.queryWallet();
+				if (list.size() == 0) {
+					list = DefaultData.getInstance().makeDefaultWallet();
+					db.insertWallet(list);
+				}
+				emitter.onNext(list);
 			}
 		});
 	}

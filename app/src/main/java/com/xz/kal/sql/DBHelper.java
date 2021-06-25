@@ -9,6 +9,7 @@ import com.xz.kal.sql.dao.BillDao;
 import com.xz.kal.sql.dao.CategoryDao;
 import com.xz.kal.sql.dao.ConfigDao;
 import com.xz.kal.sql.dao.KeepDao;
+import com.xz.kal.sql.dao.WalletDao;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -23,7 +24,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	private AtomicInteger mOpenCounter = new AtomicInteger();//引用计数
 	private SQLiteDatabase mDatabase;
 
-	private static final int DB_VERSION = 1;   // 数据库版本
+	private static final int DB_VERSION = 3;   // 数据库版本
 	private static final String DB_KEYBAG = "kal_db";//数据库名
 
 
@@ -52,6 +53,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			db.execSQL(CategoryDao.CREATE_SQL);
 			db.execSQL(KeepDao.CREATE_SQL);
 			db.execSQL(ConfigDao.CREATE_SQL);
+			db.execSQL(WalletDao.CREATE_SQL);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
