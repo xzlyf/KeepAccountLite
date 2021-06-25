@@ -30,7 +30,7 @@ class Model implements IAddContract.IModel {
 	}
 
 	@Override
-	public Observable<Map<Integer, List<Category>>> getItemData() {
+	public Observable<Map<Integer, List<Category>>> getCategory() {
 		return Observable.create(new ObservableOnSubscribe<Map<Integer, List<Category>>>() {
 			@Override
 			public void subscribe(@NonNull ObservableEmitter<Map<Integer, List<Category>>> emitter) throws Throwable {

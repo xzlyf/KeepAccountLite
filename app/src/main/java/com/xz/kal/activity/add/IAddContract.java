@@ -16,13 +16,13 @@ import io.reactivex.rxjava3.core.Observable;
  */
 public interface IAddContract {
 	interface IModel {
-		Observable<Map<Integer, List<Category>>> getItemData();
+		Observable<Map<Integer, List<Category>>> getCategory();
 
 		Observable<Bill> saveBill(Bill bill);
 	}
 
 	interface IPresenter {
-		void getItemData();
+		void getCategory();
 
 		void saveBill(Bill bill);
 	}

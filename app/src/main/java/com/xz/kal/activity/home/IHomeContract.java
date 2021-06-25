@@ -35,6 +35,10 @@ public interface IHomeContract {
 	}
 
 	interface IPresenter {
+		//初始化标签
+		void initCategory();
+
+		//刷新今日日期
 		void getToday();
 
 		//获取今天的账单
@@ -51,6 +55,7 @@ public interface IHomeContract {
 
 		//计算指定日期的账单
 		void calcBill(Date start, Date end);
+
 	}
 
 	interface IView extends IBaseView {

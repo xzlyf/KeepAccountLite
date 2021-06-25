@@ -59,7 +59,7 @@ public class AddActivity extends BaseActivity implements IAddContract.IView {
 		mPresenter = new Presenter(this);
 		changeNavigatorBar();
 		initView();
-		mPresenter.getItemData();
+		mPresenter.getCategory();
 	}
 
 	private void initView() {

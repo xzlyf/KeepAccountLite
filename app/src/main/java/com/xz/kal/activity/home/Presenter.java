@@ -1,6 +1,8 @@
 package com.xz.kal.activity.home;
 
+import com.xz.kal.constant.Local;
 import com.xz.kal.entity.Bill;
+import com.xz.kal.entity.Category;
 import com.xz.kal.entity.DayBill;
 import com.xz.kal.utils.CalendarUtil;
 
@@ -29,6 +31,24 @@ public class Presenter implements IHomeContract.IPresenter {
 		mView = view;
 		model = new Model();
 		dayCal = Calendar.getInstance();
+	}
+
+	@Override
+	public void initCategory() {
+		model.getCategory()
+				.subscribeOn(Schedulers.newThread())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new BlockingBaseObserver<List<Category>>() {
+					@Override
+					public void onNext(@NonNull List<Category> list) {
+						Local.initCategory = true;
+					}
+
+					@Override
+					public void onError(@NonNull Throwable e) {
+						Local.initCategory = false;
+					}
+				});
 	}
 
 	@Override

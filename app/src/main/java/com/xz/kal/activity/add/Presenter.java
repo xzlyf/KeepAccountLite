@@ -27,8 +27,8 @@ class Presenter implements IAddContract.IPresenter {
 	}
 
 	@Override
-	public void getItemData() {
-		mModel.getItemData()
+	public void getCategory() {
+		mModel.getCategory()
 				.subscribeOn(Schedulers.newThread())
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(new BlockingBaseObserver<Map<Integer, List<Category>>>() {

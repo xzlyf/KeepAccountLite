@@ -13,4 +13,6 @@ public class Local {
 	public static final CharSequence SYMBOL_OUT = "out";
 	//货币符号，可变
 	public static String symbol = "￥";
+	//初始化分类标签
+	public static boolean initCategory;
 }
