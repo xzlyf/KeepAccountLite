@@ -75,7 +75,7 @@ public class DefaultData {
 	 */
 	public List<Wallet> makeDefaultWallet() {
 		List<Wallet> list = new ArrayList<>();
-		Wallet wallet1 = new Wallet(1, "零钱");
+		Wallet wallet1 = new Wallet(1, "零钱", R.mipmap.ic_lijin);
 		list.add(wallet1);
 		return list;
 	}

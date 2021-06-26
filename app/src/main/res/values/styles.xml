@@ -45,4 +45,8 @@
         <item name="android:windowExitAnimation">@anim/tranlate_dialog_out</item>
     </style>
 
+    <style name="CommonDialog_inOut">
+        <item name="android:windowEnterAnimation">@anim/dialog_show</item>
+        <item name="android:windowExitAnimation">@anim/dialog_hide</item>
+    </style>
 </resources>

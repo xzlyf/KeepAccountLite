@@ -378,6 +378,7 @@ public class DBManager {
 		SQLiteDatabase db = dbHelper.openDB();
 		ContentValues cv = new ContentValues();
 		cv.put(WalletDao.LABEL, wallet.getName());
+		cv.put(WalletDao.ICON, wallet.getIcon());
 		db.insert(WalletDao.TABLE_NAME, null, cv);
 		dbHelper.closeDB();
 	}
@@ -396,7 +397,8 @@ public class DBManager {
 		try {
 			for (Wallet wallet : list) {
 				cv = new ContentValues();
-				cv.put(CategoryDao.LABEL, wallet.getName());
+				cv.put(WalletDao.LABEL, wallet.getName());
+				cv.put(WalletDao.ICON, wallet.getIcon());
 				db.insert(WalletDao.TABLE_NAME, null, cv);
 			}
 			db.setTransactionSuccessful();
@@ -428,10 +430,10 @@ public class DBManager {
 	 * @param id     钱包id
 	 * @param wallet 新的分类
 	 */
-	public int updateCategory(int id, Wallet wallet) {
+	public int updateWallet(int id, Wallet wallet) {
 		SQLiteDatabase db = dbHelper.openDB();
 		ContentValues cv = new ContentValues();
-		cv.put(CategoryDao.LABEL, wallet.getName());
+		cv.put(WalletDao.LABEL, wallet.getName());
 		int line = db.update(WalletDao.TABLE_NAME, cv, WalletDao.ID + "=?", new String[]{String.valueOf(id)});
 		dbHelper.closeDB();
 		return line;
@@ -452,6 +454,7 @@ public class DBManager {
 				wallet = new Wallet();
 				wallet.setId(cursor.getInt(0));
 				wallet.setName(cursor.getString(1));
+				wallet.setIcon(cursor.getInt(2));
 				list.add(wallet);
 			}
 		} catch (Exception e) {

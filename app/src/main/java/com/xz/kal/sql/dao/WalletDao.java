@@ -13,7 +13,7 @@ public class WalletDao {
 
 	public static final String CREATE_SQL = "CREATE TABLE wallet (" +
 			"id INTEGER PRIMARY KEY AUTOINCREMENT," +
-			"label TEXT" +
+			"label TEXT," +
 			"icon INTEGER" +
 			");";
 }

@@ -49,7 +49,7 @@ public abstract class BaseDialog extends Dialog {
 			WindowManager.LayoutParams lp = window.getAttributes();
 			DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
 			lp.width = (int) (dm.widthPixels * 0.8);
-			lp.dimAmount = 0.2f;
+			lp.dimAmount = 0.3f;
 			window.setAttributes(lp);
 		}
 

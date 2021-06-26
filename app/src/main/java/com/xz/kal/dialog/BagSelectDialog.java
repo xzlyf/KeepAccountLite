@@ -1,13 +1,19 @@
 package com.xz.kal.dialog;
 
 import android.content.Context;
+import android.view.Window;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.orhanobut.logger.Logger;
 import com.xz.kal.R;
+import com.xz.kal.adapter.WalletAdapter;
 import com.xz.kal.base.BaseDialog;
+import com.xz.kal.base.BaseRecyclerAdapter;
 import com.xz.kal.entity.Wallet;
+import com.xz.kal.utils.SpacesItemDecorationVH;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +33,7 @@ public class BagSelectDialog extends BaseDialog {
 	RecyclerView recyclerView;
 	private OnSelectItemListener mListener;
 	private List<Wallet> mList;
+	private WalletAdapter adapter;
 
 	public BagSelectDialog(Context context) {
 		super(context);
@@ -42,11 +49,31 @@ public class BagSelectDialog extends BaseDialog {
 	protected void initData() {
 		setCancelable(true);
 		setCanceledOnTouchOutside(true);
+		//设置Dialog样式
+		Window window = getWindow();
+		if (window != null) {
+			window.setWindowAnimations(R.style.CommonDialog_inOut);
+		}
+		GridLayoutManager gm = new GridLayoutManager(mContext, 4);
+		recyclerView.setLayoutManager(gm);
+		recyclerView.addItemDecoration(new SpacesItemDecorationVH(20));
+		adapter = new WalletAdapter(mContext);
+		recyclerView.setAdapter(adapter);
+		adapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<Wallet>() {
+			@Override
+			public void onClick(Wallet wallet) {
+				if (mListener != null) {
+					mListener.onSelect(wallet);
+				}
+				BagSelectDialog.this.dismiss();
+			}
+		});
 	}
 
 	public void setWallList(List<Wallet> list) {
 		mList.clear();
 		mList.addAll(list);
+
 	}
 
 
@@ -54,8 +81,10 @@ public class BagSelectDialog extends BaseDialog {
 		this.mListener = listener;
 	}
 
+
 	@Override
 	public void show() {
+		adapter.refresh(mList);
 		super.show();
 	}
 

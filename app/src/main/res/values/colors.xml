@@ -19,6 +19,9 @@
     <color name="stair_5">#ACE987</color>
     <color name="stair_6">#F9F871</color>
 
+    <!--钱包配色-->
+    <color name="wallet_1">#FF8C3F</color>
+
     <color name="main_background">#F4F4F4</color>
     <color name="blue_1">#2196F3</color>
     <color name="blue_2">#196AAA</color>

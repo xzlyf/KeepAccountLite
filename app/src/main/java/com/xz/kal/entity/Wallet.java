@@ -8,14 +8,16 @@ package com.xz.kal.entity;
 public class Wallet {
 	private int id;
 	private String name;
+	private int icon;
 
 	public Wallet() {
 	}
 
 
-	public Wallet(int id, String name) {
+	public Wallet(int id, String name, int icon) {
 		this.id = id;
 		this.name = name;
+		this.icon = icon;
 	}
 
 	public int getId() {
@@ -32,5 +34,13 @@ public class Wallet {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public int getIcon() {
+		return icon;
+	}
+
+	public void setIcon(int icon) {
+		this.icon = icon;
 	}
 }
