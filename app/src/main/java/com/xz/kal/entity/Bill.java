@@ -12,6 +12,7 @@ public class Bill implements Serializable {
 
 	private int id;
 	private Category category;
+	private Wallet wallet;
 	private String inout;
 	private double money;
 	private String remark;
@@ -32,6 +33,14 @@ public class Bill implements Serializable {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	public Wallet getWallet() {
+		return wallet;
+	}
+
+	public void setWallet(Wallet wallet) {
+		this.wallet = wallet;
 	}
 
 	public String getInout() {

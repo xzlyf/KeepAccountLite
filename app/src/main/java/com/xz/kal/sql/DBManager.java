@@ -109,6 +109,7 @@ public class DBManager {
 		SQLiteDatabase db = dbHelper.openDB();
 		ContentValues cv = new ContentValues();
 		cv.put(BillDao.CATEGORY_ID, bill.getCategory().getId());
+		cv.put(BillDao.WALLET_ID, bill.getWallet().getId());
 		cv.put(BillDao.INOUT, bill.getInout());
 		cv.put(BillDao.MONEY, bill.getMoney());
 		cv.put(BillDao.REMARK, bill.getRemark());

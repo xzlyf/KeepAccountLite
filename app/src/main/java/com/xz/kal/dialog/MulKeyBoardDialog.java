@@ -118,6 +118,8 @@ public class MulKeyBoardDialog extends BaseDialog {
 				dismiss();
 			}
 		});
+
+		// TODO: 2021/6/27 获取钱包数据
 	}
 
 	public void setCategory(Category category) {
