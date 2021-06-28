@@ -13,7 +13,7 @@
         android:layout_gravity="center"
         android:background="@drawable/bg_item"
         android:padding="8dp"
-        android:src="@mipmap/ic_gouwu" />
+        android:src="@mipmap/ic_unknow" />
 
     <TextView
         android:id="@+id/tv_label"
@@ -22,7 +22,7 @@
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:layout_weight="1"
-        android:text="购物"
+        android:text="未知"
         android:textColor="@color/secondary_text"
         android:textSize="18sp" />
 
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="10dp"
-        android:text="￥300"
+        android:text="￥NaN"
         android:textColor="@color/primary_text"
         android:textSize="20sp" />
 

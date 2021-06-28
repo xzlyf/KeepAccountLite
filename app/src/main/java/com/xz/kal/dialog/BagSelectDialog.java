@@ -84,7 +84,7 @@ public class BagSelectDialog extends BaseDialog {
 
 	@Override
 	public void show() {
-		adapter.refresh(mList);
+		adapter.refreshAndClear(mList);
 		super.show();
 	}
 

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.orhanobut.logger.Logger;
 import com.xz.kal.R;
 import com.xz.kal.activity.add.AddActivity;
 import com.xz.kal.adapter.BillAdapterV2;
@@ -44,6 +45,7 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 
 	private Presenter mPresenter;
 	private BillAdapterV2 billAdapter;
+	private BagSelectDialog walletDialog;
 
 	@Override
 	public boolean homeAsUpEnabled() {
@@ -91,10 +93,12 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 				overridePendingTransition(R.anim.push_in_addactivity, R.anim.no_anim);
 				break;
 			case R.id.tv_wallet:
-				BagSelectDialog dialog = new BagSelectDialog(mContext);
-				dialog.create();
-				dialog.setWallList(mPresenter.getWalletData());
-				dialog.show();
+				if (walletDialog == null) {
+					walletDialog = new BagSelectDialog(mContext);
+					walletDialog.create();
+					walletDialog.setWallList(mPresenter.getWalletData());
+				}
+				walletDialog.show();
 				break;
 		}
 	}

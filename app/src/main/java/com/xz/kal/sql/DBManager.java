@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
@@ -179,7 +180,8 @@ public class DBManager {
 	public List<Bill> queryBill(long start, long end) {
 		SQLiteDatabase db = dbHelper.openDB();
 		String sqlBuild = "select * from " + BillDao.TABLE_NAME + " c join " + CategoryDao.TABLE_NAME
-				+ " g on c." + BillDao.CATEGORY_ID + " = g." + CategoryDao.ID +
+				+ " g on c." + BillDao.CATEGORY_ID + " = g." + CategoryDao.ID + " join " + WalletDao.TABLE_NAME
+				+ " w on c." + BillDao.WALLET_ID + " = w." + WalletDao.ID +
 				" where " + BillDao.CREATE_TIME + "  between ? and ? order by " + BillDao.CREATE_TIME + " desc";
 		Cursor cursor = null;
 		List<Bill> list = new ArrayList<>();
@@ -188,19 +190,25 @@ public class DBManager {
 			cursor = db.rawQuery(sqlBuild, new String[]{String.valueOf(start), String.valueOf(end)});
 			Bill bill;
 			Category category;
+			Wallet wallet;
 			while (cursor.moveToNext()) {
 				bill = new Bill();
+				wallet = new Wallet();
 				category = new Category();
 				bill.setId(cursor.getInt(0));
-				bill.setInout(cursor.getString(2));
-				bill.setMoney(cursor.getDouble(3));
-				bill.setRemark(cursor.getString(4));
-				bill.setUpdateTime(new Date(cursor.getLong(5)));
-				bill.setCreateTime(new Date(cursor.getLong(6)));
-				category.setId(cursor.getInt(7));
-				category.setLabel(cursor.getString(8));
-				category.setIcon(cursor.getInt(9));
-				category.setInout(cursor.getString(10));
+				bill.setInout(cursor.getString(3));
+				bill.setMoney(cursor.getDouble(4));
+				bill.setRemark(cursor.getString(5));
+				bill.setUpdateTime(new Date(cursor.getLong(6)));
+				bill.setCreateTime(new Date(cursor.getLong(7)));
+				category.setId(cursor.getInt(8));
+				category.setLabel(cursor.getString(9));
+				category.setIcon(cursor.getInt(10));
+				category.setInout(cursor.getString(11));
+				wallet.setId(cursor.getInt(12));
+				wallet.setName(cursor.getString(13));
+				wallet.setIcon(cursor.getInt(14));
+				bill.setWallet(wallet);
 				bill.setCategory(category);
 				list.add(bill);
 			}
