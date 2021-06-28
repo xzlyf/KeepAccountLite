@@ -57,6 +57,7 @@ public class AddActivity extends BaseActivity implements IAddContract.IView {
 	@Override
 	public void initData() {
 		mPresenter = new Presenter(this);
+		mPresenter.getWallet();
 		changeNavigatorBar();
 		initView();
 		mPresenter.getCategory();
@@ -136,6 +137,7 @@ public class AddActivity extends BaseActivity implements IAddContract.IView {
 						});
 
 					}
+					multiDialog.setWallet(mPresenter.getWalletData());
 					multiDialog.setCategory(category);
 					multiDialog.show();
 

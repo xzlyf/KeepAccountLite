@@ -24,22 +24,41 @@ import com.xz.kal.base.BaseDialog;
 import com.xz.kal.constant.Local;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
+import com.xz.kal.entity.Wallet;
 import com.xz.kal.utils.DatePickerUtil;
 import com.xz.kal.utils.TimeUtil;
 
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 public class MulKeyBoardDialog extends BaseDialog {
 
-	private EditText money;// 金额
-	private EditText remarks;//备注
-	private TextView selectCategory;
-	private TextView wordCount;//字数
-	private TextView time;//时间
-	private TextView date;//日期
-	private ImageView selectType;//选中的图标
-	private ImageView back;
+	@BindView(R.id.back)
+	ImageView back;
+	@BindView(R.id.tv_wallet)
+	TextView tvWallet;
+	@BindView(R.id.select_type)
+	ImageView selectType;
+	@BindView(R.id.select_category)
+	TextView selectCategory;
+	@BindView(R.id.money)
+	EditText money;
+	@BindView(R.id.symbol)
+	TextView symbol;
+	@BindView(R.id.time_text)
+	TextView timeText;
+	@BindView(R.id.date_text)
+	TextView dateText;
+	@BindView(R.id.remarks)
+	EditText remarks;
+	@BindView(R.id.text_count)
+	TextView textCount;
+	@BindView(R.id.custom_keyboard)
+	KeyboardView mNumberView;
 	private long timeStamp;//时间戳
 
 	private static final int DATE_SELECT = -1;
@@ -54,6 +73,7 @@ public class MulKeyBoardDialog extends BaseDialog {
 
 	private Category mCategory;
 	private OnSubmitCallback mCallback;
+	private List<Wallet> wallets;
 
 	public MulKeyBoardDialog(Context context) {
 		this(context, R.style.BottomDialog);
@@ -89,16 +109,6 @@ public class MulKeyBoardDialog extends BaseDialog {
 		// 数字键盘
 		Keyboard mNumberKeyboard = new Keyboard(mContext, R.xml.custom_keyboard_v1);
 		//数字键盘View
-		KeyboardView mNumberView = findViewById(R.id.custom_keyboard);
-		money = findViewById(R.id.money);
-		remarks = findViewById(R.id.remarks);
-		selectCategory = findViewById(R.id.select_category);
-		wordCount = findViewById(R.id.text_count);
-		selectType = findViewById(R.id.select_type);
-		time = findViewById(R.id.time_text);
-		date = findViewById(R.id.date_text);
-		back = findViewById(R.id.back);
-		TextView symbol = findViewById(R.id.symbol);
 		symbol.setText(Local.symbol);
 
 		mNumberView.setKeyboard(mNumberKeyboard);
@@ -109,8 +119,8 @@ public class MulKeyBoardDialog extends BaseDialog {
 		remarks.addTextChangedListener(textWatcher);
 
 		timeStamp = System.currentTimeMillis();//获取当前系统时间
-		date.setText(TimeUtil.getSimMilliDate("yyyy年M月d日", timeStamp));
-		time.setText(TimeUtil.getSimMilliDate("H:mm", timeStamp));
+		dateText.setText(TimeUtil.getSimMilliDate("yyyy年M月d日", timeStamp));
+		timeText.setText(TimeUtil.getSimMilliDate("H:mm", timeStamp));
 
 		back.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -122,11 +132,10 @@ public class MulKeyBoardDialog extends BaseDialog {
 		// TODO: 2021/6/27 获取钱包数据
 	}
 
-	public void setCategory(Category category) {
-		this.mCategory = category;
-		money.setText("");
-	}
+	@OnClick(R.id.tv_wallet)
+	void selectWallet() {
 
+	}
 
 	@Override
 	public void show() {
@@ -264,13 +273,13 @@ public class MulKeyBoardDialog extends BaseDialog {
 
 		@Override
 		public void afterTextChanged(Editable s) {
-			if (wordCount.getVisibility() == View.GONE) {
-				wordCount.setVisibility(View.VISIBLE);
+			if (textCount.getVisibility() == View.GONE) {
+				textCount.setVisibility(View.VISIBLE);
 			}
 			if (remarks.length() == 0) {
-				wordCount.setVisibility(View.GONE);
+				textCount.setVisibility(View.GONE);
 			}
-			wordCount.setText(remarks.length() + "/100");
+			textCount.setText(remarks.length() + "/100");
 		}
 	};
 
@@ -284,8 +293,8 @@ public class MulKeyBoardDialog extends BaseDialog {
 			public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 				final String d = year + "年" + (month + 1) + "月" + dayOfMonth + "日";
 				timeStamp = TimeUtil.getStringToDate(d, "yyyy年MM月dd日");
-				date.setText(d);
-				date.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+				dateText.setText(d);
+				dateText.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
 
 				DatePickerUtil.showTimePicker(mContext, new TimePickerDialog.OnTimeSetListener() {
 					@Override
@@ -293,8 +302,8 @@ public class MulKeyBoardDialog extends BaseDialog {
 						String da = hourOfDay + ":" + minute;
 						String target = d + da;
 						timeStamp = TimeUtil.getStringToDate(target, "yyyy年MM月dd日HH:mm");
-						time.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
-						time.setText(da);
+						timeText.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+						timeText.setText(da);
 
 					}
 				});
@@ -323,6 +332,8 @@ public class MulKeyBoardDialog extends BaseDialog {
 		bill.setRemark(remarks.getText().toString().trim());
 		bill.setInout(mCategory.getInout());
 		bill.setCategory(mCategory);
+		//todo  选中哪个钱包
+		bill.setWallet(wallets.get(0));
 		bill.setMoney(m);
 
 		if (mCallback != null) {
@@ -333,6 +344,17 @@ public class MulKeyBoardDialog extends BaseDialog {
 
 	public void setOnSubmitCallback(OnSubmitCallback callback) {
 		this.mCallback = callback;
+	}
+
+	public void setWallet(List<Wallet> wallet) {
+		this.wallets = wallet;
+		tvWallet.setText(String.format("%s ▾", wallet.get(0).getName()));
+	}
+
+
+	public void setCategory(Category category) {
+		this.mCategory = category;
+		money.setText("");
 	}
 
 	public interface OnSubmitCallback {

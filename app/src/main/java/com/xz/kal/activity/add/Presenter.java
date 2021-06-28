@@ -2,7 +2,9 @@ package com.xz.kal.activity.add;
 
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
+import com.xz.kal.entity.Wallet;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,11 +21,37 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 class Presenter implements IAddContract.IPresenter {
 	private IAddContract.IModel mModel;
 	private IAddContract.IView mView;
+	private List<Wallet> wallets;
 
 	public Presenter(IAddContract.IView view) {
 		mView = view;
 		mModel = new Model();
+		wallets = new ArrayList<>();
 
+	}
+
+	@Override
+	public List<Wallet> getWalletData() {
+		return wallets;
+	}
+
+	@Override
+	public void getWallet() {
+		mModel.getWallet()
+				.subscribeOn(Schedulers.newThread())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new BlockingBaseObserver<List<Wallet>>() {
+					@Override
+					public void onNext(@NonNull List<Wallet> list) {
+						wallets.clear();
+						wallets.addAll(list);
+					}
+
+					@Override
+					public void onError(@NonNull Throwable e) {
+						wallets.clear();
+					}
+				});
 	}
 
 	@Override

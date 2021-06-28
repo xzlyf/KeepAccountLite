@@ -4,7 +4,9 @@ import com.xz.kal.base.BaseApplication;
 import com.xz.kal.constant.Local;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
+import com.xz.kal.entity.Wallet;
 import com.xz.kal.sql.DBManager;
+import com.xz.kal.sql.DefaultData;
 import com.xz.kal.sql.dao.BillDao;
 
 import java.util.ArrayList;
@@ -27,6 +29,21 @@ class Model implements IAddContract.IModel {
 
 	public Model() {
 		db = DBManager.getInstance(BaseApplication.getContext());
+	}
+
+	@Override
+	public Observable<List<Wallet>> getWallet() {
+		return Observable.create(new ObservableOnSubscribe<List<Wallet>>() {
+			@Override
+			public void subscribe(@NonNull ObservableEmitter<List<Wallet>> emitter) throws Throwable {
+				List<Wallet> list = db.queryWallet();
+				if (list.size() == 0) {
+					list = DefaultData.getInstance().makeDefaultWallet();
+					db.insertWallet(list);
+				}
+				emitter.onNext(list);
+			}
+		});
 	}
 
 	@Override
