@@ -275,12 +275,15 @@ public abstract class BaseActivity extends AppCompatActivity {
 	 * 底部导航栏颜色
 	 */
 	protected void changeNavigatorBar() {
-		int vis = getWindow().getDecorView().getSystemUiVisibility();
-		vis |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-		getWindow().getDecorView().setSystemUiVisibility(vis);
-		Window window = getWindow();
-		window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-		window.setNavigationBarColor(getResources().getColor(R.color.white));
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			int vis = getWindow().getDecorView().getSystemUiVisibility();
+			vis |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+			getWindow().getDecorView().setSystemUiVisibility(vis);
+			Window window = getWindow();
+			window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+			window.setNavigationBarColor(getResources().getColor(R.color.white));
+		}
+
 	}
 
 	/**

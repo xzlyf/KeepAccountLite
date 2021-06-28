@@ -1,8 +1,6 @@
 package com.xz.kal.dialog;
 
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
@@ -12,12 +10,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
+import com.codbking.widget.DatePickDialog;
+import com.codbking.widget.OnSureLisener;
+import com.codbking.widget.bean.DateType;
 import com.google.android.material.snackbar.Snackbar;
 import com.xz.kal.R;
 import com.xz.kal.base.BaseDialog;
@@ -25,7 +24,6 @@ import com.xz.kal.constant.Local;
 import com.xz.kal.entity.Bill;
 import com.xz.kal.entity.Category;
 import com.xz.kal.entity.Wallet;
-import com.xz.kal.utils.DatePickerUtil;
 import com.xz.kal.utils.TimeUtil;
 
 import java.util.Date;
@@ -59,7 +57,6 @@ public class MulKeyBoardDialog extends BaseDialog {
 	TextView textCount;
 	@BindView(R.id.custom_keyboard)
 	KeyboardView mNumberView;
-	private long timeStamp;//时间戳
 
 	private static final int DATE_SELECT = -1;
 	private static final int SUBMIT = -4;
@@ -69,6 +66,8 @@ public class MulKeyBoardDialog extends BaseDialog {
 	private static final int MULTI = -12;//*
 	private static final int DIVISION = -13;//÷
 	private static final int DECIMAL = -9;//.
+
+	private Date selectDate;
 
 
 	private Category mCategory;
@@ -118,10 +117,6 @@ public class MulKeyBoardDialog extends BaseDialog {
 
 		remarks.addTextChangedListener(textWatcher);
 
-		timeStamp = System.currentTimeMillis();//获取当前系统时间
-		dateText.setText(TimeUtil.getSimMilliDate("yyyy年M月d日", timeStamp));
-		timeText.setText(TimeUtil.getSimMilliDate("H:mm", timeStamp));
-
 		back.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -139,6 +134,12 @@ public class MulKeyBoardDialog extends BaseDialog {
 
 	@Override
 	public void show() {
+		long timeStamp = System.currentTimeMillis();//获取当前系统时间
+		selectDate = new Date(timeStamp);
+		dateText.setText(TimeUtil.getSimMilliDate("yyyy年M月d日", timeStamp));
+		timeText.setText(TimeUtil.getSimMilliDate("H:mm", timeStamp));
+		dateText.setTextColor(mContext.getResources().getColor(R.color.primary_text));
+		timeText.setTextColor(mContext.getResources().getColor(R.color.primary_text));
 		selectType.setImageResource(mCategory.getIcon());
 		selectCategory.setText(mCategory.getLabel());
 		super.show();
@@ -284,31 +285,36 @@ public class MulKeyBoardDialog extends BaseDialog {
 	};
 
 
+	private DatePickDialog datePickDialog;
+
 	/**
 	 * 日期选择器
 	 */
 	private void selectDate() {
-		DatePickerUtil.showDatePicker(mContext, new DatePickerDialog.OnDateSetListener() {
-			@Override
-			public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-				final String d = year + "年" + (month + 1) + "月" + dayOfMonth + "日";
-				timeStamp = TimeUtil.getStringToDate(d, "yyyy年MM月dd日");
-				dateText.setText(d);
-				dateText.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+		if (datePickDialog == null) {
+			datePickDialog = new DatePickDialog(mContext);
+			//设置标题
+			datePickDialog.setTitle("选择时间");
+			//设置类型
+			datePickDialog.setType(DateType.TYPE_ALL);
+			//设置消息体的显示格式，日期格式
+			datePickDialog.setMessageFormat("yyyy-MM-dd HH:mm");
+			//设置点击确定按钮回调
+			datePickDialog.setOnSureLisener(null);
+			datePickDialog.setOnSureLisener(new OnSureLisener() {
+				@Override
+				public void onSure(Date date) {
+					selectDate.setTime(date.getTime());
+					dateText.setText(TimeUtil.getSimMilliDate("yyyy年M月d日", date.getTime()));
+					dateText.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+					timeText.setText(TimeUtil.getSimMilliDate("H:mm", date.getTime()));
+					timeText.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+				}
+			});
+		}
+		datePickDialog.show();
 
-				DatePickerUtil.showTimePicker(mContext, new TimePickerDialog.OnTimeSetListener() {
-					@Override
-					public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-						String da = hourOfDay + ":" + minute;
-						String target = d + da;
-						timeStamp = TimeUtil.getStringToDate(target, "yyyy年MM月dd日HH:mm");
-						timeText.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
-						timeText.setText(da);
 
-					}
-				});
-			}
-		});
 	}
 
 	private void saveBill() {
@@ -327,7 +333,7 @@ public class MulKeyBoardDialog extends BaseDialog {
 		}
 
 		Bill bill = new Bill();
-		bill.setCreateTime(new Date(System.currentTimeMillis()));
+		bill.setCreateTime(selectDate);
 		bill.setUpdateTime(bill.getCreateTime());
 		bill.setRemark(remarks.getText().toString().trim());
 		bill.setInout(mCategory.getInout());

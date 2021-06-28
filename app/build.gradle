@@ -52,4 +52,6 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
     //tabLayout
     implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
+    //日期选择对话框
+    implementation 'com.github.codbking:PickTime:v1.0.1'
 }
