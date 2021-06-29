@@ -1,5 +1,7 @@
 package com.xz.kal.activity.home;
 
+import android.util.Log;
+
 import com.orhanobut.logger.Logger;
 import com.xz.kal.constant.Local;
 import com.xz.kal.entity.Bill;

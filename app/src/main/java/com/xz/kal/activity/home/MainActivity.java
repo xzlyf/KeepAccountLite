@@ -8,8 +8,10 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.codbking.widget.DatePickDialog;
+import com.codbking.widget.OnSureLisener;
+import com.codbking.widget.bean.DateType;
 import com.google.android.material.snackbar.Snackbar;
-import com.orhanobut.logger.Logger;
 import com.xz.kal.R;
 import com.xz.kal.activity.add.AddActivity;
 import com.xz.kal.adapter.BillAdapterV2;
@@ -24,6 +26,7 @@ import com.xz.kal.utils.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -46,6 +49,7 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 	private Presenter mPresenter;
 	private BillAdapterV2 billAdapter;
 	private BagSelectDialog walletDialog;
+	private DatePickDialog datePickDialog;
 
 	@Override
 	public boolean homeAsUpEnabled() {
@@ -84,7 +88,7 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 	}
 
 
-	@OnClick({R.id.tv_add, R.id.tv_wallet})
+	@OnClick({R.id.tv_add, R.id.tv_wallet, R.id.tv_day})
 	public void onViewClick(View v) {
 		switch (v.getId()) {
 			case R.id.tv_add:
@@ -99,6 +103,39 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 					walletDialog.setWallList(mPresenter.getWalletData());
 				}
 				walletDialog.show();
+				break;
+			case R.id.tv_day:
+				if (datePickDialog == null) {
+					datePickDialog = new DatePickDialog(mContext);
+					//设置标题
+					datePickDialog.setTitle("选择时间");
+					//设置类型
+					datePickDialog.setType(DateType.TYPE_YMD);
+					//设置消息体的显示格式，日期格式
+					datePickDialog.setMessageFormat("yyyy-MM-dd");
+					//设置点击确定按钮回调
+					datePickDialog.setOnSureLisener(null);
+					datePickDialog.setOnSureLisener(new OnSureLisener() {
+						@Override
+						public void onSure(Date date) {
+							Calendar c = Calendar.getInstance();
+							c.setTime(date);
+							today(c);
+							c.set(Calendar.HOUR_OF_DAY, 23);//控制时
+							c.set(Calendar.MINUTE, 59);//控制分
+							c.set(Calendar.SECOND, 59);//控制秒
+							c.set(Calendar.MILLISECOND, 0);
+							Date end = new Date(c.getTimeInMillis());
+							c.set(Calendar.HOUR_OF_DAY, 0);//控制时
+							c.set(Calendar.MINUTE, 0);//控制分
+							c.set(Calendar.SECOND, 0);//控制秒
+							c.set(Calendar.MILLISECOND, 0);
+							Date start = new Date(c.getTimeInMillis());
+							mPresenter.getBill(start, end);
+						}
+					});
+				}
+				datePickDialog.show();
 				break;
 		}
 	}
