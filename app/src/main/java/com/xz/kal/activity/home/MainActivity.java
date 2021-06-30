@@ -132,6 +132,7 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 							c.set(Calendar.MILLISECOND, 0);
 							Date start = new Date(c.getTimeInMillis());
 							mPresenter.getBill(start, end);
+
 						}
 					});
 				}
@@ -145,6 +146,7 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == Local.REQ_ADD && resultCode == RESULT_OK) {
 			mPresenter.getBill();
+			mPresenter.getToday();
 		}
 	}
 
@@ -159,17 +161,20 @@ public class MainActivity extends BaseActivity implements IHomeContract.IView {
 	}
 
 	@Override
-	public void refresh(List<Bill> list) {
+	public void refresh(List<Bill> list, Date... time) {
 		if (refreshLayout.isRefreshing()) {
 			refreshLayout.setRefreshing(false);
 			Snackbar.make(refreshLayout, "刷新成功", Snackbar.LENGTH_SHORT).show();
 		}
-		//刷新今日账单金额
-		mPresenter.calcTodayBill();
+		//刷新列表控件
 		if (list != null) {
 			billAdapter.refreshAndClear(list);
 		} else {
 			billAdapter.refreshAndClear(new ArrayList<>());
+		}
+		//刷新指定日期范围账单金额
+		if (time != null && time.length == 2) {
+			mPresenter.calcBill(time[0], time[1]);
 		}
 	}
 

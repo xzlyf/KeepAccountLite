@@ -1,7 +1,5 @@
 package com.xz.kal.activity.home;
 
-import android.util.Log;
-
 import com.orhanobut.logger.Logger;
 import com.xz.kal.constant.Local;
 import com.xz.kal.entity.Bill;
@@ -105,7 +103,7 @@ public class Presenter implements IHomeContract.IPresenter {
 				.subscribe(new BlockingBaseObserver<List<Bill>>() {
 					@Override
 					public void onNext(@NonNull List<Bill> list) {
-						mView.refresh(list);
+						mView.refresh(list, start, end);
 					}
 
 					@Override
@@ -116,31 +114,6 @@ public class Presenter implements IHomeContract.IPresenter {
 				});
 	}
 
-	@Override
-	public void calcTodayBill() {
-		calcBill(CalendarUtil.getDayStart().getTime(), CalendarUtil.getDayEnd().getTime());
-	}
-
-	@Override
-	public void calcMonthBill() {
-		model.calcBill(CalendarUtil.getMonthStart().getTime(), CalendarUtil.getMonthEnd().getTime())
-				.subscribeOn(Schedulers.newThread())
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(new BlockingBaseObserver<DayBill>() {
-					@Override
-					public void onNext(@NonNull DayBill dayBill) {
-						mView.todayBill(dayBill);
-					}
-
-					@Override
-					public void onError(@NonNull Throwable e) {
-						DayBill err = new DayBill();
-						err.setDayIn(0.0f);
-						err.setDayOut(0.0f);
-						mView.todayBill(err);
-					}
-				});
-	}
 
 	@Override
 	public void calcBill(Date start, Date end) {

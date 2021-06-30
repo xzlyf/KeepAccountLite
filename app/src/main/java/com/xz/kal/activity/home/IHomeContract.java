@@ -53,11 +53,6 @@ public interface IHomeContract {
 		//获取指定日期的账单
 		void getBill(Date start, Date end);
 
-		//获取今天的账单
-		void calcTodayBill();
-
-		//获取本月账单
-		void calcMonthBill();
 
 		//计算指定日期的账单
 		void calcBill(Date start, Date end);
@@ -70,7 +65,7 @@ public interface IHomeContract {
 
 		void todayBill(DayBill dayBill);
 
-		void refresh(List<Bill> list);
+		void refresh(List<Bill> list, Date... time);
 
 		void setBag(String text);
 
