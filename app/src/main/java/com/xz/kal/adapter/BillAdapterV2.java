@@ -60,6 +60,14 @@ public class BillAdapterV2 extends BaseRecyclerAdapter<Bill> {
 
 		ViewHolder(@NonNull View itemView) {
 			super(itemView);
+			itemView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if (mOnItemClickListener != null) {
+						mOnItemClickListener.onClick(mList.get(getLayoutPosition()));
+					}
+				}
+			});
 		}
 	}
 }
